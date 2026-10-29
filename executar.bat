@@ -1,21 +1,84 @@
 @echo off
 REM ============================================================================
-REM  Script de Inicialização — Máquina Estatística (IFES Campus Serra)
+REM  Script de Inicializacao -- Maquina Estatistica (IFES Campus Serra)
+REM  Permite rodar o menu interativo ou comandos diretos (--demo, --test, etc.)
 REM ============================================================================
 chcp 65001 >nul
-title Máquina Estatística - IFES Serra
+title Maquina Estatistica - IFES Serra
 
-where python >nul 2>nul
-if %errorlevel% neq 0 (
-    echo [ERRO] Python não foi encontrado no PATH do sistema.
-    echo Por favor, instale o Python 3.10+ ou verifique as variáveis de ambiente.
+setlocal
+
+set "PY_CMD="
+
+REM 1. Verifica se o ambiente virtual local existe e funciona
+if exist "%~dp0.venv\Scripts\python.exe" (
+    "%~dp0.venv\Scripts\python.exe" -c "import sys" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=%~dp0.venv\Scripts\python.exe"
+)
+
+REM 2. Se nao encontrou no .venv, procura Python no sistema
+if "%PY_CMD%"=="" (
+    py -3 -c "import sys" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=py -3"
+)
+
+if "%PY_CMD%"=="" (
+    python -c "import sys" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=python"
+)
+
+if "%PY_CMD%"=="" (
+    python3 -c "import sys" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=python3"
+)
+
+if "%PY_CMD%"=="" (
+    for /d %%D in ("%LOCALAPPDATA%\Programs\Python\Python3*") do (
+        if exist "%%D\python.exe" (
+            "%%D\python.exe" -c "import sys" >nul 2>nul
+            if not errorlevel 1 set "PY_CMD=%%D\python.exe"
+        )
+    )
+)
+
+if "%PY_CMD%"=="" (
+    for /d %%D in ("C:\Program Files\Python3*") do (
+        if exist "%%D\python.exe" (
+            "%%D\python.exe" -c "import sys" >nul 2>nul
+            if not errorlevel 1 set "PY_CMD=%%D\python.exe"
+        )
+    )
+)
+
+if "%PY_CMD%"=="" (
+    echo.
+    echo ============================================================
+    echo   [ERRO] Python nao foi encontrado neste computador!
+    echo ============================================================
+    echo   Para executar este projeto, e necessario ter o Python 3.10+
+    echo   instalado. Baixe gratuitamente em:
+    echo   https://www.python.org/downloads/
+    echo.
+    echo   * Lembrete: Marque a opcao "Add python.exe to PATH"
+    echo     durante a instalacao.
+    echo ============================================================
+    echo.
     pause
     exit /b 1
 )
 
-python "%~dp0executar.py" %*
-if %errorlevel% neq 0 (
+REM 3. Se nao temos .venv configurado nesta maquina, tenta criar automaticamente
+if not exist "%~dp0.venv\Scripts\python.exe" (
+    echo [INFO] Primeira execucao neste computador: configurando ambiente...
+    %PY_CMD% -m venv "%~dp0.venv" >nul 2>nul
+    if exist "%~dp0.venv\Scripts\python.exe" (
+        set "PY_CMD=%~dp0.venv\Scripts\python.exe"
+    )
+)
+
+%PY_CMD% "%~dp0executar.py" %*
+if errorlevel 1 (
     echo.
-    echo [AVISO] A execução retornou código de erro %errorlevel%.
+    echo [AVISO] A execucao retornou codigo de erro %errorlevel%.
     pause
 )

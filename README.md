@@ -137,67 +137,61 @@ Implementação/
 
 ---
 
-## 6. Instruções de Instalação e Execução
+## 6. Instruções de Instalação e Execução (Zero Configuração)
+
+O projeto foi projetado com arquitetura de **auto-inicialização (self-bootstrapping)** para garantir que **qualquer pessoa ou avaliador consiga rodar em outra máquina com 1 único clique**, sem necessidade de configurar previamente o `pip` ou criar o ambiente virtual manualmente.
 
 ### 6.1. Requisitos de Sistema
-- **Sistema Operacional:** Windows 10/11 (ou Linux / macOS).
+- **Sistema Operacional:** Windows 10/11, Linux ou macOS.
 - **Python:** Versão 3.10 ou superior (testado e homologado no Python 3.11.9).
+- **Node.js:** **NÃO é necessário!** A interface visual React SPA já se encontra compilada na pasta `frontend/dist/` e é servida de forma nativa e integrada pelo FastAPI.
 
-### 6.2. Instalação das Dependências
-Abra o terminal (PowerShell ou Prompt de Comando) na pasta raiz do projeto:
+---
 
-```powershell
-# Opcional: Criar e ativar um ambiente virtual
-python -m venv .venv
-.\.venv\Scripts\activate
+### 6.2. Como Executar (Escolha sua preferência)
 
-# Instalar as dependências do projeto
-python -m pip install -r requirements.txt
-```
+#### Opção A: Interface Web Interativa (Recomendado — 1 Clique)
+- **No Windows:** Dê **duplo clique no arquivo `executar_web.bat`**.
+- **No Linux ou macOS:** Abra o terminal na pasta e execute:
+  ```bash
+  chmod +x executar_web.sh
+  ./executar_web.sh
+  ```
+> **O que o inicializador faz automaticamente:**
+> 1. Detecta o interpretador Python na máquina.
+> 2. Cria o ambiente virtual `.venv` caso ainda não exista.
+> 3. Instala automaticamente as dependências de `requirements.txt` na primeira execução.
+> 4. Inicia o servidor backend FastAPI na porta 8000.
+> 5. Abre seu navegador padrão diretamente em **`http://127.0.0.1:8000`**.
+> 6. Oferece controle por teclado acessível (tecla **Espaço** para girar a roleta).
 
-### 6.3. Como Executar a Aplicação
+---
 
-#### Opção A: Interface Web Interativa (1 Clique)
-Basta dar duplo clique no arquivo **`executar_web.bat`** (ou executar `python executar.py --web`):
-- O servidor FastAPI é iniciado em `http://127.0.0.1:8000`.
-- O navegador padrão abre automaticamente a interface visual completa e responsiva.
-- Possui interação acessível por teclado (tecla **Espaço** para girar a roleta).
+#### Opção B: Menu Interativo no Terminal (1 Clique)
+- **No Windows:** Dê **duplo clique no arquivo `executar.bat`**.
+- **No Linux ou macOS:**
+  ```bash
+  chmod +x executar.sh
+  ./executar.sh
+  ```
+Abre o menu completo com 10 opções (sortear rodadas com sementes customizadas, rodar os experimentos individuais de 1 a 5, exportar arquivos, rodar testes do `pytest` e iniciar o servidor web).
 
-#### Opção B: Duplo clique no Terminal Windows (executar.bat)
-Basta dar duplo clique no arquivo `executar.bat` para iniciar o menu interativo no terminal com suporte a caracteres UTF-8.
+---
 
-#### Opção C: Menu Interativo via Terminal
-```powershell
-python executar.py
-```
-O menu principal oferece as opções:
-1. Sortear e Visualizar Rodada Individual.
-2. Executar Experimento 1 (Probabilidades vs Frequências).
-3. Executar Experimento 2 (Amostra e Lei dos Grandes Números).
-4. Executar Experimento 3 (Sessões com Saldo Limitado).
-5. Executar Experimento 4 (Probabilidade Condicional e Falácia do Jogador).
-6. Executar Experimento 5 (Comparação de Tabelas de Pagamento).
-7. Executar TODOS os 5 Experimentos (Exportar tabelas CSV e gráficos PNG).
-8. Consultar Arquivos e Resultados Gerados.
-9. Executar Testes Automatizados (`pytest`).
-10. Iniciar Servidor Web e Interface Visual (`FastAPI` + `React`).
-0. Sair.
+#### Opção C: Linha de Comando Direta (Qualquer Sistema Operacional)
+Se você já tiver o Python em seu terminal, basta rodar diretamente o `executar.py`. O próprio script detecta módulos faltantes e instala via `pip` sob demanda:
 
-#### Opção D: Atalhos de Linha de Comando Diretos
-```powershell
-# Iniciar a interface visual no navegador
+```bash
+# Iniciar a interface Web e abrir no navegador
 python executar.py --web
 
-# Executar uma rodada demonstrativa no terminal
-python executar.py --demo
-
-# Executar uma rodada demonstrativa com semente fixa
+# Executar uma rodada demonstrativa com a semente oficial 2026
 python executar.py --demo --seed 2026
 
 # Executar todos os 5 experimentos e gerar todos os arquivos CSV e PNG
 python executar.py --run-all
 
-# Executar a suíte de testes automatizados com pytest
+# Executar a suíte completa de testes automatizados (pytest)
 python executar.py --test
 ```
 
