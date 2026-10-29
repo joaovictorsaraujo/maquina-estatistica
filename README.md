@@ -14,9 +14,7 @@
 
 ## 1. Identificação da Equipe
 
-- **Estudante 1:** [Nome do Estudante] — [Matrícula]
-- **Estudante 2:** [Nome do Estudante] — [Matrícula]
-- **Estudante 3:** [Nome do Estudante] — [Matrícula]
+- João Victor Santos Araujo — 20241bsi0319
 
 ---
 
