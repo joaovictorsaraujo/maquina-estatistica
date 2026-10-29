@@ -78,6 +78,9 @@ O sistema implementa o modelo matemático estrito especificado pelo professor, o
 | **matplotlib (Backend 'Agg')** | Exportação de gráficos estáticos em alta resolução (300 DPI) | Geração de gráficos vetoriais/rasterizados sem dependência de servidor gráfico interativo (headless). |
 | **scipy** | Distribuições e cálculos inferenciais | Suporte para intervalos de confiança e testes estatísticos complementares. |
 | **pytest** | Automação e verificação de testes unitários | Suíte completa com 23 asserções verificando todos os requisitos matemáticos do enunciado. |
+| **FastAPI & Uvicorn** | Backend REST para a interface web | Servidor assíncrono de alta performance que expõe o núcleo matemático via JSON sem recalcular em JS. |
+| **React, TypeScript & Vite** | Interface visual rica e responsiva | Frontend SPA com tipagem estática e suporte a acessibilidade (teclado e contraste). |
+| **Tailwind CSS & Lucide React** | Estilização responsiva e ícones semânticos | Layout adaptável a qualquer resolução (desktop, tablet e mobile) com componentes acessíveis. |
 
 ---
 
@@ -154,15 +157,21 @@ python -m pip install -r requirements.txt
 
 ### 6.3. Como Executar a Aplicação
 
-#### Opção A: Duplo clique no Windows (executar.bat)
-Basta dar duplo clique no arquivo `executar.bat` para iniciar o menu interativo com suporte automático a caracteres UTF-8.
+#### Opção A: Interface Web Interativa (1 Clique)
+Basta dar duplo clique no arquivo **`executar_web.bat`** (ou executar `python executar.py --web`):
+- O servidor FastAPI é iniciado em `http://127.0.0.1:8000`.
+- O navegador padrão abre automaticamente a interface visual completa e responsiva.
+- Possui interação acessível por teclado (tecla **Espaço** para girar a roleta).
 
-#### Opção B: Menu Interativo via Terminal
+#### Opção B: Duplo clique no Terminal Windows (executar.bat)
+Basta dar duplo clique no arquivo `executar.bat` para iniciar o menu interativo no terminal com suporte a caracteres UTF-8.
+
+#### Opção C: Menu Interativo via Terminal
 ```powershell
 python executar.py
 ```
 O menu principal oferece as opções:
-1. Sortear e Visualizar Rodada Individual (exibe o tabuleiro 3x3 e detalhamento).
+1. Sortear e Visualizar Rodada Individual.
 2. Executar Experimento 1 (Probabilidades vs Frequências).
 3. Executar Experimento 2 (Amostra e Lei dos Grandes Números).
 4. Executar Experimento 3 (Sessões com Saldo Limitado).
@@ -171,10 +180,14 @@ O menu principal oferece as opções:
 7. Executar TODOS os 5 Experimentos (Exportar tabelas CSV e gráficos PNG).
 8. Consultar Arquivos e Resultados Gerados.
 9. Executar Testes Automatizados (`pytest`).
+10. Iniciar Servidor Web e Interface Visual (`FastAPI` + `React`).
 0. Sair.
 
-#### Opção C: Atalhos de Linha de Comando Diretos
+#### Opção D: Atalhos de Linha de Comando Diretos
 ```powershell
+# Iniciar a interface visual no navegador
+python executar.py --web
+
 # Executar uma rodada demonstrativa no terminal
 python executar.py --demo
 

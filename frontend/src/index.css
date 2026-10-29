@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Animação suave para efeito de rolos girando */
+  @keyframes blur-spin {
+    0% { filter: blur(0px); transform: translateY(-10px); }
+    50% { filter: blur(3px); transform: translateY(10px); }
+    100% { filter: blur(0px); transform: translateY(0px); }
+  }
+
+  .animate-spin-reel {
+    animation: blur-spin 0.4s ease-in-out infinite;
+  }
+}

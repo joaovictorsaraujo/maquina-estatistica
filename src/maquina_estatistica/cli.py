@@ -284,6 +284,22 @@ def consultar_arquivos_gerados() -> None:
         print(f"  • resultados/{f.name}")
 
 
+def iniciar_servidor_web(host: str = "127.0.0.1", port: int = 8000) -> None:
+    """Inicia o servidor backend FastAPI com Uvicorn para servir a interface web."""
+    import uvicorn
+    from maquina_estatistica.api import app
+
+    print("\n" + "=" * 65)
+    print("      MÁQUINA ESTATÍSTICA — SERVIDOR WEB INICIADO")
+    print("=" * 65)
+    print(f" • Endereço da Aplicação Web: http://{host}:{port}")
+    print(f" • Documentação Interativa da API: http://{host}:{port}/docs")
+    print(f" • Aviso: {AVISO_LEGAL}")
+    print(" • Pressione Ctrl+C no terminal para encerrar o servidor.")
+    print("=" * 65 + "\n")
+    uvicorn.run(app, host=host, port=port)
+
+
 def executar_testes_pytest() -> int:
     """Executa a suíte de testes do pytest diretamente."""
     print("\nExecutando suíte automatizada de testes com pytest...\n")
@@ -309,11 +325,12 @@ def menu_interativo() -> None:
         print("  7. Executar TODOS os 5 Experimentos (Exportar tudo)")
         print("  8. Consultar Arquivos e Resultados Gerados")
         print("  9. Executar Testes Automatizados (pytest)")
+        print(" 10. Iniciar Servidor Web e Interface Visual")
         print("  0. Sair")
         print("-" * 74)
 
         try:
-            opcao = input(" Escolha uma opção [0-9]: ").strip()
+            opcao = input(" Escolha uma opção [0-10]: ").strip()
         except (KeyboardInterrupt, EOFError):
             print("\nEncerrando o programa.")
             break
@@ -336,6 +353,8 @@ def menu_interativo() -> None:
             consultar_arquivos_gerados()
         elif opcao == "9":
             executar_testes_pytest()
+        elif opcao == "10":
+            iniciar_servidor_web()
         elif opcao == "0":
             print("\nObrigado por utilizar a Máquina Estatística. Até logo!\n")
             break
@@ -353,9 +372,15 @@ def main() -> None:
     parser.add_argument("--demo", action="store_true", help="Executa e exibe 1 rodada de demonstração e sai.")
     parser.add_argument("--run-all", action="store_true", help="Executa os 5 experimentos, exporta CSVs e gráficos e sai.")
     parser.add_argument("--test", action="store_true", help="Executa os testes automatizados com pytest e sai.")
+    parser.add_argument("--web", action="store_true", help="Inicia o servidor web FastAPI e a interface visual.")
+    parser.add_argument("--port", type=int, default=8000, help="Porta para o servidor web (padrão: 8000).")
     parser.add_argument("--seed", type=int, default=None, help="Semente para a rodada individual em --demo.")
 
     args = parser.parse_args()
+
+    if args.web:
+        iniciar_servidor_web(port=args.port)
+        sys.exit(0)
 
     if args.demo:
         exibir_cabecalho()
