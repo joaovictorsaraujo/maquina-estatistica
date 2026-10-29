@@ -1,0 +1,15 @@
+metrica,valor
+Total de participantes,100
+Semente utilizada,42
+Participantes com Ganho (B_f > 100),23 (23.0%)
+Participantes com Empate (B_f = 100),2 (2.0%)
+Participantes com Perda (B_f < 100),75 (75.0%)
+Soma das proporções (G+E+P),100.0%
+Taxa de Esgotamento (saldo < 1),67 (67.0%)
+Saldo final mínimo (créditos),0.00
+Saldo final máximo (créditos),390.00
+Saldo final médio (créditos),52.10
+Saldo final mediano (créditos),0.00
+Saldo final desvio-padrão (créditos),93.51
+Média de rodadas jogadas,339.9
+Mediana de rodadas jogadas,340.0

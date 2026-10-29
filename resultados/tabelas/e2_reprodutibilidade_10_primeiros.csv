@@ -1,0 +1,11 @@
+rodada,original_paradas,original_comb,repeticao_paradas,repeticao_comb,coincidem
+1,"(0, 2, 4)",B-D-A,"(0, 2, 4)",B-D-A,True
+2,"(4, 0, 1)",A-B-C,"(4, 0, 1)",A-B-C,True
+3,"(4, 4, 4)",A-A-A,"(4, 4, 4)",A-A-A,True
+4,"(3, 4, 4)",E-A-A,"(3, 4, 4)",E-A-A,True
+5,"(3, 4, 3)",E-A-E,"(3, 4, 3)",E-A-E,True
+6,"(1, 0, 4)",C-B-A,"(1, 0, 4)",C-B-A,True
+7,"(0, 0, 2)",B-B-D,"(0, 0, 2)",B-B-D,True
+8,"(0, 3, 0)",B-E-B,"(0, 3, 0)",B-E-B,True
+9,"(3, 2, 1)",E-D-C,"(3, 2, 1)",E-D-C,True
+10,"(3, 2, 2)",E-D-D,"(3, 2, 2)",E-D-D,True

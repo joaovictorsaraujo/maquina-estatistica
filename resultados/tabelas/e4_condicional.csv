@@ -1,0 +1,3 @@
+condicao_anterior,total_pares,premios_seguintes,proporcao_observada,referencia_teorica,status
+Após rodada premiada (P > 0),412,17,4.13%,4.00%,estimável
+Após rodada sem prêmio (P = 0),9587,395,4.12%,4.00%,estimável

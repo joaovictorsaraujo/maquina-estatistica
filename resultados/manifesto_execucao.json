@@ -1,0 +1,48 @@
+{
+  "projeto": "Máquina Estatística — Trabalho I (IFES Serra)",
+  "disciplina": "Probabilidade e Estatística I",
+  "timestamp_execucao": "2026-10-28T23:08:42.201918",
+  "ambiente": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "plataforma": "Windows-10-10.0.19045-SP0",
+    "sistema_operacional": "Windows",
+    "arquitetura": "AMD64",
+    "gerador_pseudoaleatorio": "Python random.Random (Mersenne Twister MT19937)"
+  },
+  "parametros_experimentais": {
+    "E1": {
+      "rodadas": 10000,
+      "seed": 2026,
+      "custo_aposta": 1.0
+    },
+    "E2": {
+      "seeds": [
+        10,
+        2026,
+        123456
+      ],
+      "rodadas": 10000,
+      "pontos": [
+        100,
+        1000,
+        10000
+      ]
+    },
+    "E3": {
+      "participantes": 100,
+      "saldo_inicial": 100.0,
+      "max_rodadas": 500,
+      "seed": 42
+    },
+    "E4": {
+      "pares_analisados": 9999,
+      "seed_origem": 2026
+    },
+    "E5": {
+      "rodadas": 10000,
+      "seed_origem": 2026,
+      "acrescimo_tabela": 0.1
+    }
+  },
+  "extras": {}
+}

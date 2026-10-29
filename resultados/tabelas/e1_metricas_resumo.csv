@@ -1,0 +1,15 @@
+metrica,valor
+Total de rodadas (N),10000
+Semente utilizada,2026
+Soma das contagens,10000
+Soma das frequências relativas,1.000000
+Lucro médio observado (créditos),-0.131500
+Lucro médio teórico E[X] (créditos),-0.160000
+RTP observado (%),86.85%
+RTP teórico (%),84.00%
+Proporção premiada observada,4.12%
+Probabilidade teórica de prêmio,4.00%
+Desvio-padrão amostral s (divisor N-1),5.275035
+Erro-padrão da média,0.052750
+IC 95% Lucro Médio (Limite Inferior),-0.234889
+IC 95% Lucro Médio (Limite Superior),-0.028111
