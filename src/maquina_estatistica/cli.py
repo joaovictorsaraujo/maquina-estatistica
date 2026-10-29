@@ -16,6 +16,7 @@ from maquina_estatistica.config import (
     AVISO_LEGAL,
     CUSTO_APOSTA,
     DIR_GRAFICOS,
+    DIR_PROJETO,
     DIR_RELATORIOS,
     DIR_RESULTADOS,
     DIR_TABELAS,
