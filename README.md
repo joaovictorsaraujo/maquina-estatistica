@@ -31,28 +31,33 @@ O sistema implementa o modelo matemático estrito especificado pelo professor, o
 
 ## 3. Modelo Matemático da Máquina
 
-### 3.1. Símbolos e Rolos Circulares
-- **Conjunto de símbolos:** $S = \{A, B, C, D, E\}$ (5 símbolos).
+### 3.1. Símbolos Temáticos e Rolos Circulares
+- **Conjunto de símbolos canônicos:** $S = \{A, B, C, D, E\}$ (5 símbolos), mapeados visualmente na interface com estética Arcade Retrô-Futurista:
+  - **A** $\rightarrow$ ⚡ **Raio de Energia** (Esmeralda Neon `#10B981`)
+  - **B** $\rightarrow$ 🔮 **Orbe Místico** (Azul Elétrico `#3B82F6`)
+  - **C** $\rightarrow$ ⚛️ **Átomo Quântico** (Roxo Neon `#A855F7`)
+  - **D** $\rightarrow$ 💎 **Diamante Gaussiano** (Âmbar Ouro `#F59E0B`)
+  - **E** $\rightarrow$ 👑 **Coroa de Gauss** (Rosa Choque `#F43F5E`)
 - **Sequência circular de cada rolo:** $R = (A, B, C, D, E)$, indexada de 0 a 4.
 - **Sorteio das paradas:** Para cada um dos 3 rolos independentes, sorteia-se uma parada $K \in \{0, 1, 2, 3, 4\}$ com probabilidade uniforme $P(K) = 1/5 = 20\%$.
 - **Janela de visualização (3 linhas × 3 colunas):**
-  - **Linha Superior (Topo):** $R[K]$
-  - **Linha Central (Centro):** $R[(K + 1) \bmod 5]$ *(ÚNICA linha avaliada para pagamento)*
-  - **Linha Inferior (Base):** $R[(K + 2) \bmod 5]$
+  - **Linha Superior (Topo):** $R[K]$ (efeito visual desfocado)
+  - **Linha Central (Centro):** $R[(K + 1) \bmod 5]$ *(ÚNICA linha avaliada para pagamento, destacada com moldura luminosa e fluxo de energia)*
+  - **Linha Inferior (Base):** $R[(K + 2) \bmod 5]$ (efeito visual desfocado)
 
 ### 3.2. Linha Avaliada e Regra de Pagamento
 - **Aposta fixa:** $1{,}0$ crédito fictício por rodada.
 - **Avaliação:** Apenas a linha central determina pagamento. Diagonais, linhas superiores e inferiores não pagam prêmio.
 - **Premiação:** A rodada é premiada **apenas quando os três símbolos centrais são estritamente iguais**. Qualquer outra combinação resulta em prêmio $0{,}0$ e perda do crédito apostado ($X = -1{,}0$).
 
-| Combinação Central | Prêmio Bruto ($P$) | Lucro Líquido ($X = P - 1$) | Probabilidade Teórica |
-|:---:|:---:|:---:|:---:|
-| **A–A–A** | 5,0 créditos | +4,0 créditos | $1/125 = 0{,}8\%$ |
-| **B–B–B** | 10,0 créditos | +9,0 créditos | $1/125 = 0{,}8\%$ |
-| **C–C–C** | 15,0 créditos | +14,0 créditos | $1/125 = 0{,}8\%$ |
-| **D–D–D** | 25,0 créditos | +24,0 créditos | $1/125 = 0{,}8\%$ |
-| **E–E–E** | 50,0 créditos | +49,0 créditos | $1/125 = 0{,}8\%$ |
-| **Outras (120 triplas)** | 0,0 créditos | -1,0 crédito | $120/125 = 96{,}0\%$ |
+| Combinação Central | Símbolos Visuais | Prêmio Bruto ($P$) | Lucro Líquido ($X = P - 1$) | Probabilidade Teórica |
+|:---:|:---:|:---:|:---:|:---:|
+| **A–A–A** | ⚡ ⚡ ⚡ | 🪙 5,0 créditos (5x) | +4,0 créditos | $1/125 = 0{,}8\%$ |
+| **B–B–B** | 🔮 🔮 🔮 | 🪙 10,0 créditos (10x) | +9,0 créditos | $1/125 = 0{,}8\%$ |
+| **C–C–C** | ⚛️ ⚛️ ⚛️ | 🪙 15,0 créditos (15x) | +14,0 créditos | $1/125 = 0{,}8\%$ |
+| **D–D–D** | 💎 💎 💎 | 🪙 25,0 créditos (25x) | +24,0 créditos | $1/125 = 0{,}8\%$ |
+| **E–E–E** | 👑 👑 👑 | 🪙 50,0 créditos (50x) | +49,0 créditos | $1/125 = 0{,}8\%$ |
+| **Outras (120 triplas)** | Mistas / Desalinhadas | 🪙 0,0 créditos (0x) | -1,0 crédito | $120/125 = 96{,}0\%$ |
 
 ### 3.3. Indicadores Teóricos do Modelo Base
 - **Total de triplas centrais possíveis:** $5 \times 5 \times 5 = 125$ equiprováveis.
@@ -79,8 +84,9 @@ O sistema implementa o modelo matemático estrito especificado pelo professor, o
 | **scipy** | Distribuições e cálculos inferenciais | Suporte para intervalos de confiança e testes estatísticos complementares. |
 | **pytest** | Automação e verificação de testes unitários | Suíte completa com 23 asserções verificando todos os requisitos matemáticos do enunciado. |
 | **FastAPI & Uvicorn** | Backend REST para a interface web | Servidor assíncrono de alta performance que expõe o núcleo matemático via JSON sem recalcular em JS. |
-| **React, TypeScript & Vite** | Interface visual rica e responsiva | Frontend SPA com tipagem estática e suporte a acessibilidade (teclado e contraste). |
-| **Tailwind CSS & Lucide React** | Estilização responsiva e ícones semânticos | Layout adaptável a qualquer resolução (desktop, tablet e mobile) com componentes acessíveis. |
+| **React 18, TypeScript & Vite** | Interface Arcade Retrô-Futurista | Frontend SPA de alta fidelidade com odômetro digital, linhas de varredura CRT e partículas. |
+| **Web Audio API (Nativo)** | Sintetizador de efeitos sonoros arcade | Síntese de áudio puramente procedimental em tempo real (catracas mecânicas, moedas e fanfarras) sem dependência de MP3 externos. |
+| **Tailwind CSS & Google Fonts** | Estilização temática ("Cyber-Casino") | Fontes *Orbitron*, *Chakra Petch* e *JetBrains Mono*, botões físicos táteis 3D e motion blur vertical. |
 
 ---
 
