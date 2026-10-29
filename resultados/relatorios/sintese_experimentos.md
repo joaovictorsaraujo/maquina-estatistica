@@ -1,5 +1,5 @@
 # Síntese dos Resultados dos Cinco Experimentos — Máquina Estatística
-**Data da Execução:** 28/10/2026 23:08:42
+**Data da Execução:** 29/10/2026 05:05:04
 **Ambiente:** Python 3.11.9 (Windows)
 **Aviso Legal:** *Simulador acadêmico — somente créditos fictícios*
 
