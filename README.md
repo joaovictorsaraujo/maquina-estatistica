@@ -306,3 +306,16 @@ python -m pytest -v tests
 Em estrito cumprimento aos critérios éticos e às orientações do professor:
 - **Papel da IA no desenvolvimento:** A inteligência artificial atuou como assistente de arquitetura de software, automação de testes em Python, estruturação modular de código e suporte à conferência matemática das equações do enunciado.
 - **Verificações realizadas pela equipe:** Todas as regras de negócio, sorteios circulares mod 5, fórmulas de esperança matemática e RTP, deduções analíticas, códigos-fonte e interpretações textuais foram integralmente revisados, testados via `pytest` e confirmados pelos integrantes do grupo antes da submissão final.
+
+
+## 10. Declaração Formal de Uso de Inteligência Artificial
+
+Em conformidade com os critérios éticos e de transparência do IFES e da disciplina Probabilidade e Estatística I, declara-se que:
+
+1. **Ferramentas Utilizadas:** Google Antigravity e modelos Gemini.
+2. **Escopo do Auxílio:**
+   - Suporte na estruturação da arquitetura modular do código Python (separação entre modelo, simulação, estatísticas e exportação).
+   - Apoio na codificação da suíte com 23 testes unitários na biblioteca `pytest`.
+   - Auxílio no design, estilização acessível do painel visual HTML/CSS/JS com paleta institucional e configuração de gráficos com Chart.js.
+3. **Responsabilidade e Revisão Humana:**
+   - Todas as deduções matemáticas (espaço amostral $|\Omega| = 125$, esperança de lucro líquido $E[X] = -0{,}16$, variância populacional, RTP de $84{,}0\%$ e probabilidades condicionais), as interpretações dos cinco experimentos e a conferência de cada um dos resultados numéricos nos relatórios e tabelas CSV foram integralmente deduzidas, revisadas e validadas pelo aluno **João Victor Santos Araujo**. O código Python oficial é a fonte única da verdade matemática do trabalho.
