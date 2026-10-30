@@ -16,15 +16,26 @@ if exist "%~dp0.venv\Scripts\python.exe" (
     if not errorlevel 1 set "PY_CMD=%~dp0.venv\Scripts\python.exe"
 )
 
-REM 2. Se nao encontrou no .venv, procura Python no sistema
+REM 2. Se nao temos .venv, verifica se o Python do sistema ja tem as dependencias prontas
 if "%PY_CMD%"=="" (
-    py -3 -c "import sys" >nul 2>nul
-    if not errorlevel 1 set "PY_CMD=py -3"
+    python -c "import fastapi, uvicorn, matplotlib, pandas, numpy, pytest, scipy" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=python"
 )
 
 if "%PY_CMD%"=="" (
+    py -3 -c "import fastapi, uvicorn, matplotlib, pandas, numpy, pytest, scipy" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=py -3"
+)
+
+REM 3. Se ainda nao encontrou, procura qualquer executavel Python disponivel no sistema
+if "%PY_CMD%"=="" (
     python -c "import sys" >nul 2>nul
     if not errorlevel 1 set "PY_CMD=python"
+)
+
+if "%PY_CMD%"=="" (
+    py -3 -c "import sys" >nul 2>nul
+    if not errorlevel 1 set "PY_CMD=py -3"
 )
 
 if "%PY_CMD%"=="" (
@@ -67,23 +78,24 @@ if "%PY_CMD%"=="" (
     exit /b 1
 )
 
-REM 3. Se nao temos .venv configurado nesta maquina, tenta criar automaticamente
-if not exist "%~dp0.venv\Scripts\python.exe" (
-    echo [INFO] Primeira execucao neste computador: configurando ambiente...
-    %PY_CMD% -m venv "%~dp0.venv" >nul 2>nul
-    if exist "%~dp0.venv\Scripts\python.exe" (
-        set "PY_CMD=%~dp0.venv\Scripts\python.exe"
+REM 4. Se o Python escolhido nao tem as dependencias e nao estamos em .venv, configura o .venv
+%PY_CMD% -c "import fastapi, uvicorn, matplotlib, pandas, numpy, pytest, scipy" >nul 2>nul
+if errorlevel 1 (
+    if not exist "%~dp0.venv\Scripts\python.exe" (
+        echo [INFO] Configurando ambiente virtual e dependencias pela primeira vez...
+        %PY_CMD% -m venv "%~dp0.venv" >nul 2>nul
+        if exist "%~dp0.venv\Scripts\python.exe" (
+            set "PY_CMD=%~dp0.venv\Scripts\python.exe"
+        )
     )
 )
 
 echo ============================================================
 echo   Iniciando Servidor Web e Interface Visual...
 echo   Endereco: http://127.0.0.1:8000
+echo   O navegador sera aberto automaticamente quando pronto.
 echo ============================================================
 echo.
-
-REM Inicia o navegador padrao automaticamente apos 2 segundos
-start "" "http://127.0.0.1:8000"
 
 %PY_CMD% "%~dp0executar.py" --web --port 8000
 if errorlevel 1 (

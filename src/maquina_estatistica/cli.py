@@ -284,19 +284,33 @@ def consultar_arquivos_gerados() -> None:
         print(f"  • resultados/{f.name}")
 
 
-def iniciar_servidor_web(host: str = "127.0.0.1", port: int = 8000) -> None:
+def iniciar_servidor_web(host: str = "127.0.0.1", port: int = 8000, abrir_navegador: bool = True) -> None:
     """Inicia o servidor backend FastAPI com Uvicorn para servir a interface web."""
+    import threading
+    import time
+    import webbrowser
     import uvicorn
     from maquina_estatistica.api import app
 
+    url = f"http://{host}:{port}"
     print("\n" + "=" * 65)
     print("      MÁQUINA ESTATÍSTICA — SERVIDOR WEB INICIADO")
     print("=" * 65)
-    print(f" • Endereço da Aplicação Web: http://{host}:{port}")
-    print(f" • Documentação Interativa da API: http://{host}:{port}/docs")
+    print(f" • Endereço da Aplicação Web: {url}")
+    print(f" • Documentação Interativa da API: {url}/docs")
     print(f" • Aviso: {AVISO_LEGAL}")
     print(" • Pressione Ctrl+C no terminal para encerrar o servidor.")
     print("=" * 65 + "\n")
+
+    if abrir_navegador:
+        def _abrir():
+            time.sleep(1.2)
+            try:
+                webbrowser.open(url)
+            except Exception:
+                pass
+        threading.Thread(target=_abrir, daemon=True).start()
+
     uvicorn.run(app, host=host, port=port)
 
 

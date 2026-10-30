@@ -31,13 +31,8 @@ source .venv/bin/activate
 echo "============================================================"
 echo "  Iniciando Servidor Web e Interface Visual..."
 echo "  Endereco: http://127.0.0.1:8000"
+echo "  O navegador sera aberto automaticamente quando pronto."
 echo "============================================================"
 echo ""
-
-if command -v xdg-open &>/dev/null; then
-    xdg-open "http://127.0.0.1:8000" &>/dev/null &
-elif command -v open &>/dev/null; then
-    open "http://127.0.0.1:8000" &>/dev/null &
-fi
 
 python executar.py --web --port 8000
