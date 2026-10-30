@@ -26,14 +26,15 @@ from maquina_estatistica.modelo import ResultadoRodada
 from maquina_estatistica.simulacao import ResultadoSessao
 
 
-def exportar_e1(stats_e1: Dict[str, Any]) -> Dict[str, Path]:
+def exportar_e1(stats_e1: Dict[str, Any], diretorio: Optional[Path] = None) -> Dict[str, Path]:
     """Exporta tabelas CSV para o Experimento 1."""
-    garantir_diretorios()
+    alvo = diretorio or DIR_TABELAS
+    alvo.mkdir(parents=True, exist_ok=True)
     caminhos: Dict[str, Path] = {}
 
     # 1. Tabela de 6 categorias
     df_cat = pd.DataFrame(stats_e1["tabela_categorias"])
-    caminho_cat = DIR_TABELAS / "e1_frequencias.csv"
+    caminho_cat = alvo / "e1_frequencias.csv"
     df_cat.to_csv(caminho_cat, index=False, encoding="utf-8")
     caminhos["frequencias"] = caminho_cat
 
@@ -55,7 +56,7 @@ def exportar_e1(stats_e1: Dict[str, Any]) -> Dict[str, Path]:
         {"metrica": "IC 95% Lucro Médio (Limite Superior)", "valor": f"{stats_e1['ic_95_lucro'][1]:.6f}"},
     ]
     df_res = pd.DataFrame(resumo)
-    caminho_res = DIR_TABELAS / "e1_metricas_resumo.csv"
+    caminho_res = alvo / "e1_metricas_resumo.csv"
     df_res.to_csv(caminho_res, index=False, encoding="utf-8")
     caminhos["resumo"] = caminho_res
 
@@ -243,6 +244,7 @@ def exportar_e5(stats_e5: Dict[str, Any]) -> Dict[str, Path]:
 
 def exportar_manifesto_metadados(
     dados_extras: Optional[Dict[str, Any]] = None,
+    caminho_saida: Optional[Path] = None,
 ) -> Path:
     """Gera manifesto formal em JSON registrando o ambiente, sementes e parâmetros."""
     garantir_diretorios()
@@ -266,7 +268,7 @@ def exportar_manifesto_metadados(
         },
         "extras": dados_extras or {},
     }
-    caminho = DIR_RESULTADOS / "manifesto_execucao.json"
+    caminho = caminho_saida or (DIR_RESULTADOS / "manifesto_execucao.json")
     with open(caminho, "w", encoding="utf-8") as f:
         json.dump(manifesto, f, indent=2, ensure_ascii=False)
     return caminho

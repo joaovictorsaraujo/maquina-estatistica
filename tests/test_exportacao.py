@@ -27,10 +27,10 @@ from maquina_estatistica.exportacao import (
 )
 
 
-def test_exportacao_e1():
+def test_exportacao_e1(tmp_path):
     """Valida a exportação dos arquivos CSV do Experimento 1."""
     regs, stats = executar_experimento_1(seed=2026, n_rodadas=100)
-    caminhos = exportar_e1(stats)
+    caminhos = exportar_e1(stats, diretorio=tmp_path)
 
     assert "frequencias" in caminhos
     assert "resumo" in caminhos
@@ -46,9 +46,9 @@ def test_exportacao_e1():
     assert len(df_res) > 5
 
 
-def test_exportacao_manifesto_json():
+def test_exportacao_manifesto_json(tmp_path):
     """Valida a geração e sintaxe do arquivo de metadados JSON."""
-    caminho = exportar_manifesto_metadados({"teste": True})
+    caminho = exportar_manifesto_metadados({"teste": True}, caminho_saida=tmp_path / "manifesto.json")
     assert caminho.exists()
 
     with open(caminho, "r", encoding="utf-8") as f:
