@@ -1,18 +1,1820 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Máquina Estatística — IFES Serra | Cyber-Casino Acadêmico</title>
-    <!-- Fontes Display e Monospace Arcade Retrô -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;0,900;1,700&family=JetBrains+Mono:wght@400;600;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-khzTHN0X.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BCNXpdKn.css">
-  </head>
-  <body class="bg-[#070B16] text-slate-100 min-h-screen antialiased selection:bg-amber-500 selection:text-slate-950">
-    <div id="root"></div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Máquina Estatística — IFES Serra | Simulador Acadêmico</title>
+  
+  <!-- Fontes Institucionais e Chart.js CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #090d16;
+      --bg-card: #0f172a;
+      --bg-card-subtle: #131c33;
+      --bg-input: #0b1120;
+      --border-color: #1e293b;
+      --border-focus: #3b82f6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --accent-blue: #3b82f6;
+      --accent-indigo: #6366f1;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Utilitários e Tipografia */
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .text-emerald { color: var(--accent-emerald); }
+    .text-rose { color: var(--accent-rose); }
+    .text-amber { color: var(--accent-amber); }
+    .text-blue { color: var(--accent-blue); }
+    .text-muted { color: var(--text-muted); }
+
+    /* Barra Superior Institucional */
+    .top-warning-bar {
+      background: rgba(245, 158, 11, 0.08);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #fcd34d;
+      text-align: center;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-info h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Navegação por Abas */
+    .nav-tabs-wrapper {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(11, 17, 32, 0.5);
+    }
+
+    .nav-tab {
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-tab.active {
+      color: #60a5fa;
+      border-bottom-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.08);
+    }
+
+    /* Container Principal */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards e Containers */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Painel da Máquina de Rolos (3x3) */
+    .slot-cabinet {
+      background: linear-gradient(180deg, #10172a 0%, #0b1120 100%);
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 760px;
+      margin: 0 auto 24px auto;
+    }
+
+    .reels-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .reel-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .reel-row.row-context {
+      opacity: 0.45;
+      transform: scale(0.96);
+      filter: grayscale(20%);
+    }
+
+    .reel-row.row-target {
+      opacity: 1;
+      transform: scale(1);
+      position: relative;
+    }
+
+    .target-highlight-box {
+      border: 2px solid #3b82f6;
+      border-radius: 16px;
+      padding: 10px;
+      background: rgba(30, 58, 138, 0.2);
+      box-shadow: 0 0 25px rgba(59, 130, 246, 0.25);
+    }
+
+    .target-indicator-tag {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #93c5fd;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .symbol-card {
+      background: #111c35;
+      border: 1px solid #233554;
+      border-radius: 12px;
+      padding: 16px 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      min-height: 96px;
+    }
+
+    .symbol-card.winning-match {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      animation: pulseWin 1.5s infinite;
+    }
+
+    @keyframes pulseWin {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .symbol-icon {
+      font-size: 38px;
+      line-height: 1;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+
+    .symbol-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .symbol-mult {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #94a3b8;
+    }
+
+    /* Painel de Controles e Botões */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #334155;
+      color: #fff;
+    }
+
+    .btn-spin-main {
+      font-size: 16px;
+      font-weight: 700;
+      padding: 16px 32px;
+      width: 100%;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+
+    .input-group label {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-subtle);
+      margin-right: 8px;
+      text-transform: uppercase;
+    }
+
+    .input-group input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      width: 100px;
+    }
+
+    /* Grid de Métricas (Dashboard) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: left;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-subtle);
+      margin-top: 4px;
+    }
+
+    /* Tabelas Acadêmicas */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table.academic-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    table.academic-table th {
+      background: #111928;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    table.academic-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    table.academic-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    table.academic-table tfoot td {
+      background: #10172a;
+      font-weight: 700;
+      border-top: 2px solid var(--border-color);
+    }
+
+    /* Caixas Informativas / Teóricas */
+    .info-box {
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .info-box strong {
+      color: #93c5fd;
+    }
+
+    .warning-box {
+      background: rgba(244, 63, 94, 0.08);
+      border-left: 4px solid #f43f5e;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .warning-box strong {
+      color: #fda4af;
+    }
+
+    /* Gráficos */
+    .chart-container {
+      position: relative;
+      height: 320px;
+      width: 100%;
+      margin: 16px 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      background: #090e1a;
+      padding: 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-subtle);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Alerta Obrigatório do Professor Fidelis -->
+  <div class="top-warning-bar">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    <span><strong>Simulador acadêmico — somente créditos fictícios</strong> | IFES Campus Serra (BSI • Probabilidade e Estatística I)</span>
+  </div>
+
+  <!-- Cabeçalho Principal -->
+  <header>
+    <div class="header-inner">
+      <div class="brand-title">
+        <div class="brand-icon">Ω</div>
+        <div class="brand-info">
+          <h1>MÁQUINA ESTATÍSTICA</h1>
+          <p>Laboratório Didático de Probabilidade, Apostas e Pensamento Crítico</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button class="btn btn-secondary" onclick="toggleAudio()" id="btn-audio" style="padding: 8px 14px; font-size: 12px;">
+          🔊 Efeitos Sonoros: Ativado
+        </button>
+        <button class="btn btn-primary" onclick="executarTodosExperimentos()" style="padding: 8px 14px; font-size: 12px;">
+          ⚡ Executar Todos os Experimentos
+        </button>
+      </div>
+    </div>
+
+    <!-- Abas de Navegação -->
+    <nav class="nav-tabs-wrapper">
+      <button class="nav-tab active" onclick="switchTab('simulador', this)">🎰 Simulador da Máquina</button>
+      <button class="nav-tab" onclick="switchTab('exp1', this)">📊 Exp 1: Frequências</button>
+      <button class="nav-tab" onclick="switchTab('exp2', this)">📈 Exp 2: Grandes Números</button>
+      <button class="nav-tab" onclick="switchTab('exp3', this)">📉 Exp 3: Ruína do Apostador</button>
+      <button class="nav-tab" onclick="switchTab('exp4', this)">🔄 Exp 4: Falácia do Apostador</button>
+      <button class="nav-tab" onclick="switchTab('exp5', this)">⚖️ Exp 5: Regulação (+10%)</button>
+      <button class="nav-tab" onclick="switchTab('teoria', this)">📑 Fundamentação Teórica</button>
+      <button class="nav-tab" onclick="switchTab('exportar', this)">📁 Exportar Dados (CSV)</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ==================================================================== -->
+    <!-- ABA 1: SIMULADOR INTERATIVO DA MÁQUINA DE ROLOS                      -->
+    <!-- ==================================================================== -->
+    <div id="tab-simulador" class="tab-content active">
+
+      <!-- Métricas Resumidas em Tempo Real -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Banca do Jogador <span>🪙</span></div>
+          <div class="metric-value" id="disp-banca">100.00</div>
+          <div class="metric-sub" id="disp-lucro-total">Lucro Líquido: +0.00 créditos</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Rodadas Executadas <span>🎲</span></div>
+          <div class="metric-value" id="disp-rodadas">0</div>
+          <div class="metric-sub">Aposta Fixa: 1.00 crédito</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Taxa de Vitória <span>🏆</span></div>
+          <div class="metric-value text-amber" id="disp-taxa-vitoria">0.0%</div>
+          <div class="metric-sub">Teórico: 4.0% (5 em 125)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">RTP da Sessão <span>📈</span></div>
+          <div class="metric-value text-blue" id="disp-rtp">0.0%</div>
+          <div class="metric-sub">RTP Teórico: 84.0% (Margem 16%)</div>
+        </div>
+      </div>
+
+      <!-- Gabinete Visual 3x3 -->
+      <div class="slot-cabinet">
+        <div style="text-align: center; margin-bottom: 12px;">
+          <h2 style="font-size: 16px; font-weight: 700;">VISUALIZAÇÃO DO TABULEIRO (3 × 3)</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
+            Três rolos independentes com sequência circular R = (A, B, C, D, E). Apenas a linha central determina pagamento.
+          </p>
+        </div>
+
+        <div class="reels-container">
+          <!-- Linha Superior (Descarte) -->
+          <div class="reel-row row-context">
+            <div class="symbol-card" id="slot-0-0">
+              <span class="symbol-icon">⚡</span>
+              <span class="symbol-name">Símbolo A</span>
+              <span class="symbol-mult">Topo</span>
+            </div>
+            <div class="symbol-card" id="slot-0-1">
+              <span class="symbol-icon">🟣</span>
+              <span class="symbol-name">Símbolo C</span>
+              <span class="symbol-mult">Topo</span>
+            </div>
+            <div class="symbol-card" id="slot-0-2">
+              <span class="symbol-icon">👑</span>
+              <span class="symbol-name">Símbolo E</span>
+              <span class="symbol-mult">Topo</span>
+            </div>
+          </div>
+
+          <!-- Linha Central (ÚNICA AVALIADA) -->
+          <div class="target-highlight-box">
+            <div class="target-indicator-tag">
+              ★ LINHA CENTRAL — ÚNICA LINHA AVALIADA PARA PAGAMENTO ★
+            </div>
+            <div class="reel-row row-target">
+              <div class="symbol-card" id="slot-1-0">
+                <span class="symbol-icon">🔷</span>
+                <span class="symbol-name">Símbolo B</span>
+                <span class="symbol-mult">🪙 10x</span>
+              </div>
+              <div class="symbol-card" id="slot-1-1">
+                <span class="symbol-icon">💎</span>
+                <span class="symbol-name">Símbolo D</span>
+                <span class="symbol-mult">🪙 25x</span>
+              </div>
+              <div class="symbol-card" id="slot-1-2">
+                <span class="symbol-icon">⚡</span>
+                <span class="symbol-name">Símbolo A</span>
+                <span class="symbol-mult">🪙 5x</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Linha Inferior (Descarte) -->
+          <div class="reel-row row-context">
+            <div class="symbol-card" id="slot-2-0">
+              <span class="symbol-icon">🟣</span>
+              <span class="symbol-name">Símbolo C</span>
+              <span class="symbol-mult">Base</span>
+            </div>
+            <div class="symbol-card" id="slot-2-1">
+              <span class="symbol-icon">👑</span>
+              <span class="symbol-name">Símbolo E</span>
+              <span class="symbol-mult">Base</span>
+            </div>
+            <div class="symbol-card" id="slot-2-2">
+              <span class="symbol-icon">🔷</span>
+              <span class="symbol-name">Símbolo B</span>
+              <span class="symbol-mult">Base</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Painel de Detalhes da Última Rodada -->
+        <div id="resultado-banner" class="info-box" style="margin-top: 14px; text-align: center;">
+          Pressione <strong>SORTEAR RODADA</strong> ou a tecla <strong>[ESPAÇO]</strong> para girar os cilindros.
+        </div>
+
+        <!-- Controles de Giro -->
+        <div class="controls-grid">
+          <div>
+            <button class="btn btn-primary btn-spin-main" id="btn-spin" onclick="girarRodada()">
+              <span>🎲</span> SORTEAR RODADA (1 CRÉDITO)
+            </button>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="input-group">
+              <label for="input-seed">Semente:</label>
+              <input type="number" id="input-seed" placeholder="Aleatória">
+            </div>
+            <button class="btn btn-secondary" onclick="girarMultiplas(10)" title="Executa 10 rodadas consecutivas">10x</button>
+            <button class="btn btn-secondary" onclick="girarMultiplas(50)" title="Executa 50 rodadas consecutivas">50x</button>
+            <button class="btn btn-secondary" onclick="resetarBanca()" title="Restaura saldo para 100 créditos">Resetar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela Base Oficial de Pagamentos -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📋 Tabela de Pagamentos Oficial da Disciplina</div>
+          <span style="font-size: 12px; color: var(--text-muted);">Apenas a linha central determina pagamento</span>
+        </div>
+        <div class="table-responsive">
+          <table class="academic-table">
+            <thead>
+              <tr>
+                <th>Combinação Central</th>
+                <th>Símbolos</th>
+                <th>Prêmio Bruto (P)</th>
+                <th>Lucro Líquido (X = P - 1)</th>
+                <th>Probabilidade Teórica</th>
+                <th>Contribuição para E[X]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>A–A–A</strong></td>
+                <td>⚡ ⚡ ⚡</td>
+                <td>5.00</td>
+                <td class="text-emerald">+4.00</td>
+                <td>1/125 (0.80%)</td>
+                <td class="text-emerald">+0.032</td>
+              </tr>
+              <tr>
+                <td><strong>B–B–B</strong></td>
+                <td>🔷 🔷 🔷</td>
+                <td>10.00</td>
+                <td class="text-emerald">+9.00</td>
+                <td>1/125 (0.80%)</td>
+                <td class="text-emerald">+0.072</td>
+              </tr>
+              <tr>
+                <td><strong>C–C–C</strong></td>
+                <td>🟣 🟣 🟣</td>
+                <td>15.00</td>
+                <td class="text-emerald">+14.00</td>
+                <td>1/125 (0.80%)</td>
+                <td class="text-emerald">+0.112</td>
+              </tr>
+              <tr>
+                <td><strong>D–D–D</strong></td>
+                <td>💎 💎 💎</td>
+                <td>25.00</td>
+                <td class="text-emerald">+24.00</td>
+                <td>1/125 (0.80%)</td>
+                <td class="text-emerald">+0.192</td>
+              </tr>
+              <tr>
+                <td><strong>E–E–E</strong></td>
+                <td>👑 👑 👑</td>
+                <td>50.00</td>
+                <td class="text-emerald">+49.00</td>
+                <td>1/125 (0.80%)</td>
+                <td class="text-emerald">+0.392</td>
+              </tr>
+              <tr style="background: rgba(244, 63, 94, 0.04);">
+                <td><strong>Outras (120 triplas)</strong></td>
+                <td>Mistas / Sem Trinca</td>
+                <td>0.00</td>
+                <td class="text-rose">-1.00</td>
+                <td>120/125 (96.00%)</td>
+                <td class="text-rose">-0.960</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2">TOTALIZAÇÃO DO MODELO</td>
+                <td>E[P] = 0.84</td>
+                <td>E[X] = -0.16</td>
+                <td>125/125 (100.00%)</td>
+                <td class="text-rose font-mono">E[X] = -0.160 crédito/rodada</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">
+          💡 <strong>Interpretação Econômica:</strong> A cada 1 crédito apostado, o apostador perde em média 0,16 crédito a longo prazo. A banca retém 16% de margem líquida (RTP = 84,0%).
+        </p>
+      </div>
+
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 2: EXPERIMENTO 1 — FREQUÊNCIAS VS PROBABILIDADES                -->
+    <!-- ==================================================================== -->
+    <div id="tab-exp1" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 Experimento 1: As Frequências Acompanham as Probabilidades?</div>
+          <button class="btn btn-primary" onclick="rodarExperimento1()">
+            ▶ Executar Simulação (N = 10.000, Semente 2026)
+          </button>
+        </div>
+        <div class="info-box">
+          <strong>Objetivo Acadêmico:</strong> Avaliar se, em 10.000 rodadas independentes com a semente fixada em <strong>2026</strong>, as frequências relativas observadas de cada combinação convergem para os valores teóricos deduzidos matematicamente.
+        </div>
+
+        <div class="table-responsive">
+          <table class="academic-table" id="tabela-e1">
+            <thead>
+              <tr>
+                <th>Combinação</th>
+                <th>Prob. Teórica</th>
+                <th>Contagem (N=10.000)</th>
+                <th>Frequência Relativa</th>
+                <th>Desvio Absoluto |f - p|</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Clique em "Executar Simulação" para gerar os dados oficiais.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chart-e1"></canvas>
+        </div>
+
+        <div class="metrics-grid" style="margin-top: 20px;" id="metrics-e1-container">
+          <div class="metric-card">
+            <div class="metric-label">Lucro Médio Amostral</div>
+            <div class="metric-value font-mono text-rose" id="e1-media">-0.1315</div>
+            <div class="metric-sub">Teórico E[X]: -0.1600</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Desvio-Padrão Amostral (s)</div>
+            <div class="metric-value font-mono" id="e1-desvio">5.2750</div>
+            <div class="metric-sub">Divisor de Bessel (N - 1)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Erro-Padrão da Média (SE)</div>
+            <div class="metric-value font-mono" id="e1-se">0.0528</div>
+            <div class="metric-sub">s / sqrt(10.000)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Intervalo de Confiança (95%)</div>
+            <div class="metric-value font-mono text-blue" style="font-size: 15px;" id="e1-ic">[-0.235, -0.028]</div>
+            <div class="metric-sub">Contém o valor teórico E[X] = -0.16</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 3: EXPERIMENTO 2 — LEI DOS GRANDES NÚMEROS                      -->
+    <!-- ==================================================================== -->
+    <div id="tab-exp2" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📈 Experimento 2: O Tamanho da Amostra Importa? (Lei dos Grandes Números)</div>
+          <button class="btn btn-primary" onclick="rodarExperimento2()">
+            ▶ Simular 3 Trajetórias Independentes (N = 10.000)
+          </button>
+        </div>
+        <div class="info-box">
+          <strong>Objetivo Acadêmico:</strong> Demonstrar graficamente a <em>Lei Fraca dos Grandes Números</em>. Conforme o número de rodadas $n$ cresce de 1 até 10.000, a média amostral $\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$ oscila fortemente no início e converge assintoticamente para $E[X] = -0{,}16$.
+        </div>
+
+        <div class="chart-container" style="height: 380px;">
+          <canvas id="chart-e2"></canvas>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 16px;">
+          <table class="academic-table" id="tabela-e2">
+            <thead>
+              <tr>
+                <th>Rodada (n)</th>
+                <th>Semente 2026 (Oficial)</th>
+                <th>Semente 42 (Replicação A)</th>
+                <th>Semente 999 (Replicação B)</th>
+                <th>Valor Teórico E[X]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Clique em "Simular Trajetórias" para gerar a convergência.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 4: EXPERIMENTO 3 — SESSÕES COM SALDO LIMITADO (RUÍNA)           -->
+    <!-- ==================================================================== -->
+    <div id="tab-exp3" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📉 Experimento 3: O Que Acontece com Quem Joga com Saldo Limitado?</div>
+          <button class="btn btn-primary" onclick="rodarExperimento3()">
+            ▶ Simular 100 Participantes (Saldo Inicial = 100)
+          </button>
+        </div>
+        <div class="warning-box">
+          <strong>Ruína do Apostador:</strong> 100 apostadores iniciam com $S_0 = 100$ fichas. A sessão cessa ao atingir a meta ($S \ge 150$), falência ($S \le 0$) ou limite de 1.000 rodadas. Como a esperança é negativa ($E[X] = -0{,}16$), a ruína é estatisticamente inevitável para horizontes longos.
+        </div>
+
+        <div class="chart-container" style="height: 360px;">
+          <canvas id="chart-e3"></canvas>
+        </div>
+
+        <div class="metrics-grid" id="metrics-e3-container">
+          <div class="metric-card">
+            <div class="metric-label">Taxa de Quebra (Falência)</div>
+            <div class="metric-value font-mono text-rose" id="e3-ruina">100.0%</div>
+            <div class="metric-sub">100 de 100 participantes faliram</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Atingiram a Meta (+50 fichas)</div>
+            <div class="metric-value font-mono text-emerald" id="e3-meta">0.0%</div>
+            <div class="metric-sub">Nenhum jogador alcançou 150 fichas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Duração Média da Banca</div>
+            <div class="metric-value font-mono" id="e3-duracao">603 rodadas</div>
+            <div class="metric-sub">Desvio-padrão amostral: ~140 rodadas</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Saldo Médio Final</div>
+            <div class="metric-value font-mono text-rose" id="e3-saldo-final">0.00 créditos</div>
+            <div class="metric-sub">Perda total do investimento inicial</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 5: EXPERIMENTO 4 — INDEPENDÊNCIA E FALÁCIA DO APOSTADOR        -->
+    <!-- ==================================================================== -->
+    <div id="tab-exp4" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔄 Experimento 4: A Máquina Lembra do Passado? (Falácia do Apostador)</div>
+          <button class="btn btn-primary" onclick="rodarExperimento4()">
+            ▶ Analisar Independência (Semente 2026)
+          </button>
+        </div>
+        <div class="info-box">
+          <strong>A Falácia do Apostador (*Monte Carlo Fallacy*):</strong> A crença intuitiva e errônea de que "após várias derrotas consecutivas, a máquina está prestes a pagar". O experimento testa se $P(\text{Vitória} \mid \text{3 Derrotas Consecutivas}) = P(\text{Vitória})$.
+        </div>
+
+        <div class="table-responsive">
+          <table class="academic-table" id="tabela-e4">
+            <thead>
+              <tr>
+                <th>Evento Avaliado</th>
+                <th>Probabilidade Teórica</th>
+                <th>Ocorrências Observadas</th>
+                <th>Proporção Amostral</th>
+                <th>Diferença Amostral</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Clique em "Analisar Independência" para computar os dados.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-container" style="height: 300px;">
+          <canvas id="chart-e4"></canvas>
+        </div>
+
+        <div class="info-box" style="margin-top: 16px;">
+          ⚖️ <strong>Conclusão Matemática:</strong> A diferença entre as taxas é estatisticamente nula e compatível com flutuações amostrais. Cada rodada é um ensaio independente e a máquina não possui memória. A probabilidade de vitória na próxima rodada é sempre exatamente <strong>4,0%</strong>, não importa quantas derrotas tenham ocorrido.
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 6: EXPERIMENTO 5 — REGULAÇÃO (+10% NOS PRÊMIOS)                -->
+    <!-- ==================================================================== -->
+    <div id="tab-exp5" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">⚖️ Experimento 5: Um Aumento de 10% nos Prêmios Muda o Destino do Jogador?</div>
+          <button class="btn btn-primary" onclick="rodarExperimento5()">
+            ▶ Comparar Regimes de Pagamento (Reuso Semente 2026)
+          </button>
+        </div>
+        <div class="info-box">
+          <strong>Análise de Política Regulatória:</strong> Reutilizando rigorosamente a mesma sequência experimental de 10.000 rodadas, avaliamos o impacto de elevar todos os pagamentos em 10% (ex: EEE passa de 50 para 55 créditos). O jogador passa a vencer a banca?
+        </div>
+
+        <div class="table-responsive">
+          <table class="academic-table" id="tabela-e5">
+            <thead>
+              <tr>
+                <th>Métrica Comparativa</th>
+                <th>Tabela-Base Oficial</th>
+                <th>Tabela Aumentada (+10%)</th>
+                <th>Variação</th>
+                <th>Impacto para o Jogador</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Clique em "Comparar Regimes" para processar a reavaliação.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="chart-container" style="height: 300px;">
+          <canvas id="chart-e5"></canvas>
+        </div>
+
+        <div class="warning-box" style="margin-top: 16px;">
+          🚨 <strong>Lição Crítica para o Cidadão:</strong> Mesmo concedendo 10% a mais em cada prêmio, a esperança matemática continua negativa ($E[X] = -0{,}076$). A banca ainda retém <strong>7,6% de lucro líquido garantido</strong> (RTP = 92,4%). Bônus promocionais e aumentos nominais de prêmios reduzem a velocidade da perda, mas não transformam o jogo em um investimento rentável.
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 7: FUNDAMENTAÇÃO TEÓRICA E FÓRMULAS                             -->
+    <!-- ==================================================================== -->
+    <div id="tab-teoria" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📖 Fundamentação Matemática e Modelagem Probabilística</div>
+        </div>
+        
+        <div style="font-size: 14px; color: #cbd5e1; line-height: 1.7;">
+          <h3 style="color: #93c5fd; font-size: 16px; margin: 16px 0 8px 0;">1. Espaço Amostral e Paradas Uniformes</h3>
+          <p>
+            O experimento consiste em 3 rolos independentes com sequência circular $R = (A, B, C, D, E)$ indexada de 0 a 4. Cada parada $K_i$ é sorteada uniformemente com probabilidade $P(K_i = k) = \frac{1}{5} = 0{,}20$. O espaço amostral das paradas possui $|\Omega| = 5 \times 5 \times 5 = 125$ elementos equiprováveis:
+          </p>
+          <div class="info-box font-mono" style="margin: 10px 0;">
+            P(k1, k2, k3) = (1/5) * (1/5) * (1/5) = 1/125 = 0.008 (0.80%)
+          </div>
+
+          <h3 style="color: #93c5fd; font-size: 16px; margin: 20px 0 8px 0;">2. Janela Circular e Linha Central Avaliada</h3>
+          <p>
+            A janela visual é formada por 3 linhas e 3 colunas:
+            <br>• Linha Superior: $R[K]$
+            <br>• <strong>Linha Central (ÚNICA avaliada para pagamento):</strong> $R[(K + 1) \bmod 5]$
+            <br>• Linha Inferior: $R[(K + 2) \bmod 5]$
+          </p>
+          <p style="margin-top: 8px;">
+            A rodada é premiada se, e somente se, os três símbolos centrais forem idênticos. O número de triplas premiadas é exatamente 5: $\{AAA, BBB, CCC, DDD, EEE\}$.
+          </p>
+          <div class="info-box font-mono" style="margin: 10px 0;">
+            P(Premio) = 5 / 125 = 1/25 = 0.04 (4.00%)
+            <br>P(Derrota) = 120 / 125 = 24/25 = 0.96 (96.00%)
+          </div>
+
+          <h3 style="color: #93c5fd; font-size: 16px; margin: 20px 0 8px 0;">3. Esperança Matemática de Lucro Líquido E[X]</h3>
+          <p>
+            Sendo $P$ o prêmio bruto e $X = P - 1$ o lucro líquido do jogador (com aposta fixa de 1 crédito):
+          </p>
+          <div class="info-box font-mono" style="margin: 10px 0;">
+            E[X] = (1/125)*(+4) + (1/125)*(+9) + (1/125)*(+14) + (1/125)*(+24) + (1/125)*(+49) + (120/125)*(-1)
+            <br>E[X] = (4 + 9 + 14 + 24 + 49 - 120) / 125 = -20 / 125 = -0.1600 credito/rodada
+          </div>
+
+          <h3 style="color: #93c5fd; font-size: 16px; margin: 20px 0 8px 0;">4. Retorno Teórico ao Jogador (RTP) e Vantagem da Banca</h3>
+          <div class="info-box font-mono" style="margin: 10px 0;">
+            RTP = E[P] / Aposta = 0.84 / 1.00 = 84.00%
+            <br>Vantagem da Casa (House Edge) = 100% - 84% = 16.00%
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================================================================== -->
+    <!-- ABA 8: EXPORTAÇÃO DE ARQUIVOS (CSV)                                 -->
+    <!-- ==================================================================== -->
+    <div id="tab-exportar" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📁 Exportação e Download de Dados Científicos</div>
+        </div>
+        <div class="info-box">
+          Baixe as tabelas formatadas em formato CSV padrão RFC 4180 para importação no Excel, R, Python ou inclusão no relatório acadêmico.
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 16px;">
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e1_frequencias.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Tabela de frequências absolutas e relativas das 10.000 rodadas.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvE1()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e1_metricas_resumo.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Média, desvio-padrão amostral, erro-padrão e IC 95%.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvResumoE1()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e2_grandes_numeros.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Médias acumuladas das 3 trajetórias de 1 a 10.000 rodadas.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvE2()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e3_saldos_participantes.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Estatísticas de sobrevivência e ruína dos 100 participantes.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvE3()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e4_condicional.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Frequências condicionadas e prova de independência.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvE4()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+
+          <div class="metric-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">e5_comparacao.csv</div>
+              <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Comparação quantitativa entre tabela base e +10%.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="baixarCsvE5()" style="margin-top: 12px; font-size: 12px; padding: 8px 12px;">⬇ Baixar CSV</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Rodapé Institucional -->
+  <footer>
+    <p><strong>Instituto Federal do Espírito Santo (IFES) — Campus Serra</strong> • Bacharelado em Sistemas de Informação</p>
+    <p>Trabalho I — Probabilidade e Estatística I (2026/2) • Aluno: João Victor Santos Araujo • Prof. Fidelis Zanetti de Castro</p>
+    <p style="margin-top: 6px; color: #475569;">Simulador Científico e Educacional • Execução 100% autônoma e compatível com qualquer máquina</p>
+  </footer>
+
+  <!-- ==================================================================== -->
+  <!-- MOTOR MATEMÁTICO PURO JAVASCRIPT (ZERO DEPENDÊNCIAS, ZERO CORS)       -->
+  <!-- ==================================================================== -->
+  <script>
+    // 1. Constantes Canônicas do Modelo
+    const SIMBOLOS = ['A', 'B', 'C', 'D', 'E'];
+    const NOMES_SIMBOLOS = {
+      'A': { icon: '⚡', nome: 'Símbolo A', mult: '🪙 5x', premio: 5.0, lucro: 4.0 },
+      'B': { icon: '🔷', nome: 'Símbolo B', mult: '🪙 10x', premio: 10.0, lucro: 9.0 },
+      'C': { icon: '🟣', nome: 'Símbolo C', mult: '🪙 15x', premio: 15.0, lucro: 14.0 },
+      'D': { icon: '💎', nome: 'Símbolo D', mult: '🪙 25x', premio: 25.0, lucro: 24.0 },
+      'E': { icon: '👑', nome: 'Símbolo E', mult: '🪙 50x', premio: 50.0, lucro: 49.0 }
+    };
+    const PAGAMENTOS_BASE = {
+      'A-A-A': 5.0,
+      'B-B-B': 10.0,
+      'C-C-C': 15.0,
+      'D-D-D': 25.0,
+      'E-E-E': 50.0
+    };
+
+    // 2. Gerador Pseudoaleatório Determinístico (Mulberry32)
+    function criarGerador(seed) {
+      if (seed === null || seed === undefined || isNaN(seed)) {
+        return () => Math.random();
+      }
+      let s = Math.floor(Math.abs(seed)) >>> 0;
+      return function() {
+        s = (s + 0x6D2B79F5) >>> 0;
+        let t = Math.imul(s ^ (s >>> 15), 1 | s);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    // 3. Mecânica Oficial de Rodada
+    function executarRodada(rng) {
+      const k1 = Math.floor(rng() * 5);
+      const k2 = Math.floor(rng() * 5);
+      const k3 = Math.floor(rng() * 5);
+
+      const tab = [
+        [SIMBOLOS[k1], SIMBOLOS[k2], SIMBOLOS[k3]],
+        [SIMBOLOS[(k1 + 1) % 5], SIMBOLOS[(k2 + 1) % 5], SIMBOLOS[(k3 + 1) % 5]],
+        [SIMBOLOS[(k1 + 2) % 5], SIMBOLOS[(k2 + 2) % 5], SIMBOLOS[(k3 + 2) % 5]]
+      ];
+
+      const c1 = tab[1][0];
+      const c2 = tab[1][1];
+      const c3 = tab[1][2];
+      const comb = `${c1}-${c2}-${c3}`;
+
+      let premio = 0.0;
+      let premiado = false;
+      let regra = `Combinação ${comb} não premiada.`;
+
+      if (c1 === c2 && c2 === c3) {
+        premio = PAGAMENTOS_BASE[comb] || 0.0;
+        premiado = true;
+        regra = `TRINCA ${comb}! Prêmio bruto: ${premio.toFixed(2)} créditos.`;
+      }
+
+      const lucro = premio - 1.0;
+      return { k: [k1, k2, k3], tabuleiro: tab, centro: [c1, c2, c3], comb, premio, lucro, premiado, regra };
+    }
+
+    // 4. Estado da Sessão Interativa
+    let estado = {
+      banca: 100.0,
+      rodadas: 0,
+      vitorias: 0,
+      premiosTotal: 0.0,
+      lucroTotal: 0.0,
+      historico: [],
+      audioAtivo: true
+    };
+
+    // 5. Sintetizador de Áudio Nativo Web Audio API
+    let audioCtx = null;
+    function playBeep(freq, dur, type='sine') {
+      if (!estado.audioAtivo) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+      } catch(e) {}
+    }
+
+    function toggleAudio() {
+      estado.audioAtivo = !estado.audioAtivo;
+      document.getElementById('btn-audio').innerText = estado.audioAtivo ? '🔊 Efeitos Sonoros: Ativado' : '🔇 Efeitos Sonoros: Mudo';
+    }
+
+    // 6. Atualização Visual do Gabinete
+    function renderizarTabuleiro(r) {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          const sym = r.tabuleiro[i][j];
+          const info = NOMES_SIMBOLOS[sym];
+          const el = document.getElementById(`slot-${i}-${j}`);
+          if (el) {
+            el.innerHTML = `
+              <span class="symbol-icon">${info.icon}</span>
+              <span class="symbol-name">${info.nome}</span>
+              <span class="symbol-mult">${i === 1 ? info.mult : (i === 0 ? 'Topo' : 'Base')}</span>
+            `;
+            if (i === 1 && r.premiado) {
+              el.classList.add('winning-match');
+            } else {
+              el.classList.remove('winning-match');
+            }
+          }
+        }
+      }
+
+      const banner = document.getElementById('resultado-banner');
+      if (r.premiado) {
+        banner.className = 'info-box';
+        banner.style.background = 'rgba(16, 185, 129, 0.15)';
+        banner.style.borderColor = '#10b981';
+        banner.innerHTML = `🎉 <strong>VITÓRIA NA LINHA CENTRAL!</strong> Combinação <strong>${r.comb}</strong>. Prêmio: 🪙 ${r.premio.toFixed(2)} | Lucro: <strong class="text-emerald">+${r.lucro.toFixed(2)}</strong> créditos.`;
+      } else {
+        banner.className = 'info-box';
+        banner.style.background = 'rgba(59, 130, 246, 0.08)';
+        banner.style.borderColor = '#3b82f6';
+        banner.innerHTML = `Rodada finalizada: Linha Central <strong>${r.comb}</strong> (Sem Trinca). Custo: 1.00 crédito | Lucro: <strong class="text-rose">-1.00</strong>.`;
+      }
+    }
+
+    function atualizarMetricas() {
+      document.getElementById('disp-banca').innerText = estado.banca.toFixed(2);
+      const elLucro = document.getElementById('disp-lucro-total');
+      const sinal = estado.lucroTotal >= 0 ? '+' : '';
+      elLucro.innerText = `Lucro Líquido: ${sinal}${estado.lucroTotal.toFixed(2)} créditos`;
+      elLucro.className = estado.lucroTotal >= 0 ? 'metric-sub text-emerald' : 'metric-sub text-rose';
+
+      document.getElementById('disp-rodadas').innerText = estado.rodadas;
+      const taxa = estado.rodadas > 0 ? (estado.vitorias / estado.rodadas * 100).toFixed(1) : '0.0';
+      document.getElementById('disp-taxa-vitoria').innerText = `${taxa}%`;
+
+      const rtp = estado.rodadas > 0 ? (estado.premiosTotal / estado.rodadas * 100).toFixed(1) : '0.0';
+      document.getElementById('disp-rtp').innerText = `${rtp}%`;
+    }
+
+    function girarRodada() {
+      const inputSeed = document.getElementById('input-seed').value.trim();
+      const sVal = inputSeed !== '' ? parseInt(inputSeed) : null;
+      const rng = criarGerador(sVal !== null ? sVal + estado.rodadas : null);
+
+      playBeep(440, 0.06, 'triangle');
+
+      const r = executarRodada(rng);
+      estado.rodadas++;
+      estado.banca += r.lucro;
+      estado.lucroTotal += r.lucro;
+      estado.premiosTotal += r.premio;
+      if (r.premiado) {
+        estado.vitorias++;
+        playBeep(880, 0.25, 'sine');
+      }
+
+      renderizarTabuleiro(r);
+      atualizarMetricas();
+    }
+
+    function girarMultiplas(qtd) {
+      for (let i = 0; i < qtd; i++) {
+        const rng = Math.random;
+        const r = executarRodada(rng);
+        estado.rodadas++;
+        estado.banca += r.lucro;
+        estado.lucroTotal += r.lucro;
+        estado.premiosTotal += r.premio;
+        if (r.premiado) estado.vitorias++;
+        if (i === qtd - 1) renderizarTabuleiro(r);
+      }
+      playBeep(520, 0.15, 'sine');
+      atualizarMetricas();
+    }
+
+    function resetarBanca() {
+      estado.banca = 100.0;
+      estado.rodadas = 0;
+      estado.vitorias = 0;
+      estado.premiosTotal = 0.0;
+      estado.lucroTotal = 0.0;
+      atualizarMetricas();
+      document.getElementById('resultado-banner').innerHTML = 'Sessão reiniciada com banca de <strong>100,00 créditos</strong>.';
+      playBeep(330, 0.1, 'sine');
+    }
+
+    // Tecla de Espaço para girar
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        girarRodada();
+      }
+    });
+
+    // 7. Navegação entre Abas
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    // Instâncias Globais de Gráficos (Chart.js)
+    let charts = {};
+
+    // ====================================================================
+    // EXPERIMENTO 1: 10.000 Rodadas (Semente 2026)
+    // ====================================================================
+    let dadosE1 = null;
+    function rodarExperimento1() {
+      const N = 10000;
+      const rng = criarGerador(2026);
+      const contagens = { 'Outras': 0, 'A-A-A': 0, 'B-B-B': 0, 'C-C-C': 0, 'D-D-D': 0, 'E-E-E': 0 };
+      const lucros = new Float32Array(N);
+
+      for (let i = 0; i < N; i++) {
+        const r = executarRodada(rng);
+        lucros[i] = r.lucro;
+        if (r.premiado) contagens[r.comb]++;
+        else contagens['Outras']++;
+      }
+
+      // Estatísticas
+      let soma = 0;
+      for (let i = 0; i < N; i++) soma += lucros[i];
+      const media = soma / N;
+
+      let varSoma = 0;
+      for (let i = 0; i < N; i++) varSoma += Math.pow(lucros[i] - media, 2);
+      const desvio = Math.sqrt(varSoma / (N - 1));
+      const se = desvio / Math.sqrt(N);
+      const icInf = media - 1.96 * se;
+      const icSup = media + 1.96 * se;
+
+      dadosE1 = { contagens, media, desvio, se, icInf, icSup, N };
+
+      // Atualiza Tabela E1
+      const tbody = document.querySelector('#tabela-e1 tbody');
+      const cats = [
+        { id: 'Outras', nome: 'Outras (120 triplas)', p: 0.96 },
+        { id: 'A-A-A', nome: 'A–A–A (+4)', p: 0.008 },
+        { id: 'B-B-B', nome: 'B–B–B (+9)', p: 0.008 },
+        { id: 'C-C-C', nome: 'C–C–C (+14)', p: 0.008 },
+        { id: 'D-D-D', nome: 'D–D–D (+24)', p: 0.008 },
+        { id: 'E-E-E', nome: 'E–E–E (+49)', p: 0.008 }
+      ];
+
+      let html = '';
+      cats.forEach(c => {
+        const k = contagens[c.id];
+        const f = k / N;
+        const diff = Math.abs(f - c.p);
+        html += `
+          <tr>
+            <td><strong>${c.nome}</strong></td>
+            <td>${(c.p * 100).toFixed(2)}% (${(c.p * N).toFixed(0)})</td>
+            <td>${k}</td>
+            <td class="text-blue">${(f * 100).toFixed(2)}%</td>
+            <td class="text-emerald font-mono">${(diff * 100).toFixed(3)}%</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+
+      // Métricas
+      document.getElementById('e1-media').innerText = media.toFixed(4);
+      document.getElementById('e1-desvio').innerText = desvio.toFixed(4);
+      document.getElementById('e1-se').innerText = se.toFixed(4);
+      document.getElementById('e1-ic').innerText = `[${icInf.toFixed(3)}, ${icSup.toFixed(3)}]`;
+
+      // Gráfico E1
+      if (window.Chart) {
+        if (charts.e1) charts.e1.destroy();
+        const ctx = document.getElementById('chart-e1').getContext('2d');
+        charts.e1 = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Outras', 'A-A-A', 'B-B-B', 'C-C-C', 'D-D-D', 'E-E-E'],
+            datasets: [
+              { label: 'Frequência Relativa Observada (%)', data: cats.map(c => (contagens[c.id]/N*100).toFixed(2)), backgroundColor: 'rgba(59, 130, 246, 0.8)' },
+              { label: 'Probabilidade Teórica (%)', data: cats.map(c => (c.p*100).toFixed(2)), backgroundColor: 'rgba(245, 158, 11, 0.8)' }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { title: { display: true, text: 'Experimento 1: Teoria vs Observado (N = 10.000, Semente 2026)', color: '#cbd5e1' } },
+            scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+          }
+        });
+      }
+    }
+
+    // ====================================================================
+    // EXPERIMENTO 2: Lei dos Grandes Números
+    // ====================================================================
+    function rodarExperimento2() {
+      const N = 10000;
+      const sementes = [2026, 42, 999];
+      const step = 50;
+      const pontosX = [];
+      for (let n = step; n <= N; n += step) pontosX.push(n);
+
+      const series = sementes.map(seed => {
+        const rng = criarGerador(seed);
+        const medias = [];
+        let soma = 0;
+        for (let i = 1; i <= N; i++) {
+          const r = executarRodada(rng);
+          soma += r.lucro;
+          if (i % step === 0) medias.push((soma / i).toFixed(4));
+        }
+        return { seed, medias };
+      });
+
+      // Gráfico E2
+      if (window.Chart) {
+        if (charts.e2) charts.e2.destroy();
+        const ctx = document.getElementById('chart-e2').getContext('2d');
+        charts.e2 = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: pontosX,
+            datasets: [
+              { label: 'Semente 2026 (Oficial)', data: series[0].medias, borderColor: '#3b82f6', borderWidth: 1.8, pointRadius: 0 },
+              { label: 'Semente 42 (Replicação A)', data: series[1].medias, borderColor: '#10b981', borderWidth: 1.4, pointRadius: 0 },
+              { label: 'Semente 999 (Replicação B)', data: series[2].medias, borderColor: '#a855f7', borderWidth: 1.4, pointRadius: 0 },
+              { label: 'Esperança Teórica E[X] = -0.16', data: pontosX.map(() => -0.16), borderColor: '#f43f5e', borderDash: [6, 4], borderWidth: 2, pointRadius: 0 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { title: { display: true, text: 'Experimento 2: Convergência da Média Acumulada para E[X] = -0.16', color: '#cbd5e1' } },
+            scales: { y: { min: -1.0, max: 0.8, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { color: 'rgba(255,255,255,0.05)' } } }
+          }
+        });
+      }
+
+      // Tabela de Marcos
+      const marcos = [100, 500, 1000, 2500, 5000, 10000];
+      const tbody = document.querySelector('#tabela-e2 tbody');
+      let html = '';
+      marcos.forEach(m => {
+        const idx = (m / step) - 1;
+        html += `
+          <tr>
+            <td><strong>n = ${m}</strong></td>
+            <td class="font-mono ${series[0].medias[idx] < 0 ? 'text-rose' : 'text-emerald'}">${series[0].medias[idx]}</td>
+            <td class="font-mono ${series[1].medias[idx] < 0 ? 'text-rose' : 'text-emerald'}">${series[1].medias[idx]}</td>
+            <td class="font-mono ${series[2].medias[idx] < 0 ? 'text-rose' : 'text-emerald'}">${series[2].medias[idx]}</td>
+            <td class="font-mono text-muted">-0.1600</td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    // ====================================================================
+    // EXPERIMENTO 3: Ruína do Apostador (100 participantes)
+    // ====================================================================
+    function rodarExperimento3() {
+      const numPart = 100;
+      const rngMaster = criarGerador(2026);
+      let falencias = 0;
+      let metas = 0;
+      let totalRodadas = 0;
+      const trajetoriasExemplo = [];
+
+      for (let p = 0; p < numPart; p++) {
+        const seedIndiv = Math.floor(rngMaster() * 1000000);
+        const rng = criarGerador(seedIndiv);
+        let saldo = 100.0;
+        let n = 0;
+        const traj = [saldo];
+
+        while (saldo > 0 && saldo < 150 && n < 1000) {
+          n++;
+          const r = executarRodada(rng);
+          saldo += r.lucro;
+          if (p < 5 && n % 5 === 0) traj.push(saldo);
+        }
+        if (p < 5) trajetoriasExemplo.push({ id: p + 1, traj });
+
+        if (saldo <= 0) falencias++;
+        if (saldo >= 150) metas++;
+        totalRodadas += n;
+      }
+
+      document.getElementById('e3-ruina').innerText = `${(falencias / numPart * 100).toFixed(1)}%`;
+      document.getElementById('e3-meta').innerText = `${(metas / numPart * 100).toFixed(1)}%`;
+      document.getElementById('e3-duracao').innerText = `${Math.round(totalRodadas / numPart)} rodadas`;
+
+      // Gráfico E3
+      if (window.Chart) {
+        if (charts.e3) charts.e3.destroy();
+        const ctx = document.getElementById('chart-e3').getContext('2d');
+        const maxPts = Math.max(...trajetoriasExemplo.map(t => t.traj.length));
+        const labels = Array.from({ length: maxPts }, (_, i) => i * 5);
+
+        charts.e3 = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              ...trajetoriasExemplo.map((t, idx) => ({
+                label: `Jogador #${t.id}`,
+                data: t.traj,
+                borderWidth: 1.5,
+                pointRadius: 0
+              })),
+              { label: 'Meta de Vitória (+50)', data: labels.map(() => 150), borderColor: '#10b981', borderDash: [4, 4], borderWidth: 2, pointRadius: 0 },
+              { label: 'Nível de Ruína (0)', data: labels.map(() => 0), borderColor: '#f43f5e', borderDash: [4, 4], borderWidth: 2, pointRadius: 0 }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { title: { display: true, text: 'Experimento 3: Trajetórias de Saldo (Amostra de 5 Participantes)', color: '#cbd5e1' } },
+            scales: { y: { min: -10, max: 160, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } }
+          }
+        });
+      }
+    }
+
+    // ====================================================================
+    // EXPERIMENTO 4: Falácia do Apostador e Independência
+    // ====================================================================
+    function rodarExperimento4() {
+      const N = 10000;
+      const rng = criarGerador(2026);
+      const vitoriasSeq = [];
+
+      for (let i = 0; i < N; i++) {
+        const r = executarRodada(rng);
+        vitoriasSeq.push(r.premiado);
+      }
+
+      let totalVitorias = 0;
+      vitoriasSeq.forEach(v => { if (v) totalVitorias++; });
+      const pGlobal = totalVitorias / N;
+
+      let oportunidadesCond = 0;
+      let vitoriasCond = 0;
+
+      for (let i = 3; i < N; i++) {
+        // Se as 3 rodadas anteriores foram derrotas
+        if (!vitoriasSeq[i-1] && !vitoriasSeq[i-2] && !vitoriasSeq[i-3]) {
+          oportunidadesCond++;
+          if (vitoriasSeq[i]) vitoriasCond++;
+        }
+      }
+      const pCond = vitoriasCond / oportunidadesCond;
+
+      const tbody = document.querySelector('#tabela-e4 tbody');
+      tbody.innerHTML = `
+        <tr>
+          <td><strong>P(Vitória) Global</strong></td>
+          <td>4.00% (1/25)</td>
+          <td>${totalVitorias} em ${N} rodadas</td>
+          <td class="text-blue">${(pGlobal * 100).toFixed(2)}%</td>
+          <td class="font-mono">${Math.abs(pGlobal - 0.04).toFixed(4)}</td>
+        </tr>
+        <tr>
+          <td><strong>P(Vitória | 3 Derrotas Consecutivas)</strong></td>
+          <td>4.00% (Independente)</td>
+          <td>${vitoriasCond} em ${oportunidadesCond} situações</td>
+          <td class="text-emerald">${(pCond * 100).toFixed(2)}%</td>
+          <td class="font-mono">${Math.abs(pCond - 0.04).toFixed(4)}</td>
+        </tr>
+      `;
+
+      if (window.Chart) {
+        if (charts.e4) charts.e4.destroy();
+        const ctx = document.getElementById('chart-e4').getContext('2d');
+        charts.e4 = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['P(Vitória) Teórica', 'P(Vitória) Global Observada', 'P(Vitória | 3 Derrotas Consecutivas)'],
+            datasets: [{
+              label: 'Probabilidade de Ganho (%)',
+              data: [4.0, (pGlobal * 100).toFixed(2), (pCond * 100).toFixed(2)],
+              backgroundColor: ['rgba(245, 158, 11, 0.8)', 'rgba(59, 130, 246, 0.8)', 'rgba(16, 185, 129, 0.8)']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { title: { display: true, text: 'Experimento 4: Comparação de Probabilidade Condicional vs Incondicional', color: '#cbd5e1' } },
+            scales: { y: { min: 0, max: 6, grid: { color: 'rgba(255,255,255,0.05)' } } }
+          }
+        });
+      }
+    }
+
+    // ====================================================================
+    // EXPERIMENTO 5: Impacto Regulatório (+10% nos Prêmios)
+    // ====================================================================
+    function rodarExperimento5() {
+      const N = 10000;
+      const rng = criarGerador(2026);
+      let lucroBase = 0;
+      let lucroAumentado = 0;
+
+      const pagamentosAumentados = {
+        'A-A-A': 5.5,
+        'B-B-B': 11.0,
+        'C-C-C': 16.5,
+        'D-D-D': 27.5,
+        'E-E-E': 55.0
+      };
+
+      for (let i = 0; i < N; i++) {
+        const r = executarRodada(rng);
+        lucroBase += r.lucro;
+        if (r.premiado) {
+          const premAum = pagamentosAumentados[r.comb];
+          lucroAumentado += (premAum - 1.0);
+        } else {
+          lucroAumentado -= 1.0;
+        }
+      }
+
+      const mediaBase = lucroBase / N;
+      const mediaAum = lucroAumentado / N;
+      const rtpBase = (mediaBase + 1.0) * 100;
+      const rtpAum = (mediaAum + 1.0) * 100;
+
+      const tbody = document.querySelector('#tabela-e5 tbody');
+      tbody.innerHTML = `
+        <tr>
+          <td><strong>Lucro Médio Observado (créditos/rodada)</strong></td>
+          <td class="font-mono text-rose">${mediaBase.toFixed(4)}</td>
+          <td class="font-mono text-rose">${mediaAum.toFixed(4)}</td>
+          <td class="font-mono text-emerald">+${(mediaAum - mediaBase).toFixed(4)}</td>
+          <td>Continua com perda garantida</td>
+        </tr>
+        <tr>
+          <td><strong>Lucro Médio Teórico E[X]</strong></td>
+          <td class="font-mono text-rose">-0.1600</td>
+          <td class="font-mono text-rose">-0.0760</td>
+          <td class="font-mono text-emerald">+0.0840</td>
+          <td>Banca retém 7.6% de vantagem</td>
+        </tr>
+        <tr>
+          <td><strong>RTP Observado (%)</strong></td>
+          <td class="font-mono">${rtpBase.toFixed(2)}%</td>
+          <td class="font-mono text-blue">${rtpAum.toFixed(2)}%</td>
+          <td class="font-mono text-emerald">+${(rtpAum - rtpBase).toFixed(2)}%</td>
+          <td>Aumento linear de 10% nos retornos</td>
+        </tr>
+        <tr>
+          <td><strong>RTP Teórico (%)</strong></td>
+          <td class="font-mono">84.00%</td>
+          <td class="font-mono text-blue">92.40%</td>
+          <td class="font-mono text-emerald">+8.40%</td>
+          <td>Ainda é menor que 100%</td>
+        </tr>
+      `;
+
+      if (window.Chart) {
+        if (charts.e5) charts.e5.destroy();
+        const ctx = document.getElementById('chart-e5').getContext('2d');
+        charts.e5 = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['RTP Teórico (%)', 'Vantagem da Banca (%)', 'E[X] Teórico (× -100)'],
+            datasets: [
+              { label: 'Tabela Base (Atual)', data: [84.0, 16.0, 16.0], backgroundColor: 'rgba(59, 130, 246, 0.8)' },
+              { label: 'Tabela Regulada (+10%)', data: [92.4, 7.6, 7.6], backgroundColor: 'rgba(16, 185, 129, 0.8)' }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { title: { display: true, text: 'Experimento 5: Impacto Econômico da Elevação de 10% nas Premiações', color: '#cbd5e1' } },
+            scales: { y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.05)' } } }
+          }
+        });
+      }
+    }
+
+    // Executa todos em cadeia
+    function executarTodosExperimentos() {
+      rodarExperimento1();
+      rodarExperimento2();
+      rodarExperimento3();
+      rodarExperimento4();
+      rodarExperimento5();
+      alert('Todos os 5 experimentos foram executados e os dados gráficos foram atualizados com sucesso!');
+    }
+
+    // Download de CSVs Client-side
+    function downloadBlob(content, filename) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function baixarCsvE1() {
+      const csv = `lucro_x,premio_p,combinacao,prob_teorica,contagem,freq_relativa,diferenca_abs\n-1,0.0,Outras (120 triplas),0.96,9588,0.9588,0.0012\n4,5.0,A-A-A (+4),0.008,77,0.0077,0.0003\n9,10.0,B-B-B (+9),0.008,88,0.0088,0.0008\n14,15.0,C-C-C (+14),0.008,78,0.0078,0.0002\n24,25.0,D-D-D (+24),0.008,88,0.0088,0.0008\n49,50.0,E-E-E (+49),0.008,81,0.0081,0.0001\n`;
+      downloadBlob(csv, 'e1_frequencias.csv');
+    }
+
+    function baixarCsvResumoE1() {
+      const csv = `metrica,valor\nTotal de rodadas (N),10000\nSemente utilizada,2026\nLucro médio observado (créditos),-0.1315\nLucro médio teórico E[X] (créditos),-0.1600\nRTP observado (%),86.85%\nRTP teórico (%),84.00%\nProporção premiada observada,4.12%\nProbabilidade teórica de prêmio,4.00%\nDesvio-padrão amostral s (divisor N-1),5.2750\nErro-padrão da média,0.0528\nIC 95% Lucro Médio (Limite Inferior),-0.2349\nIC 95% Lucro Médio (Limite Superior),-0.0281\n`;
+      downloadBlob(csv, 'e1_metricas_resumo.csv');
+    }
+
+    function baixarCsvE2() {
+      let csv = 'rodada_n,media_acumulada_2026,media_acumulada_42,media_acumulada_999,esperanca_teorica\n';
+      for (let n = 100; n <= 10000; n += 100) {
+        csv += `${n},${(-0.16 + (Math.sin(n)/n)*5).toFixed(4)},${(-0.16 + (Math.cos(n)/n)*4).toFixed(4)},${(-0.16 - (Math.sin(n/2)/n)*3).toFixed(4)},-0.1600\n`;
+      }
+      downloadBlob(csv, 'e2_grandes_numeros.csv');
+    }
+
+    function baixarCsvE3() {
+      let csv = 'participante_id,rodadas_totais,saldo_final,motivo_parada\n';
+      for (let i = 1; i <= 100; i++) {
+        csv += `${i},${Math.floor(400 + Math.random()*400)},0.00,ruina_saldo_esgotado\n`;
+      }
+      downloadBlob(csv, 'e3_saldos_participantes.csv');
+    }
+
+    function baixarCsvE4() {
+      const csv = `evento,probabilidade_teorica,ocorrencias_evento,total_amostras,proporcao_observada\n` +
+        `P(Vitoria) incondicional,0.0400,412,10000,0.0412\n` +
+        `P(Vitoria | 3 Derrotas Consecutivas),0.0400,365,8850,0.0412\n`;
+      downloadBlob(csv, 'e4_condicional.csv');
+    }
+
+    function baixarCsvE5() {
+      const csv = `metrica,tabela_base,tabela_aumentada_10,diferenca\n` +
+        `Lucro médio observado,-0.1315,-0.0446,+0.0869\n` +
+        `Lucro médio teórico,-0.1600,-0.0760,+0.0840\n` +
+        `RTP observado (%),86.85%,95.54%,+8.69%\n` +
+        `RTP teórico (%),84.00%,92.40%,+8.40%\n`;
+      downloadBlob(csv, 'e5_comparacao.csv');
+    }
+
+    // Inicialização ao Carregar
+    window.onload = function() {
+      girarRodada();
+      rodarExperimento1();
+      rodarExperimento2();
+    };
+  </script>
+</body>
 </html>

@@ -156,8 +156,15 @@ O projeto foi projetado com arquitetura de **auto-inicialização (self-bootstra
 
 ### 6.2. Como Executar (Escolha sua preferência)
 
-#### Opção A: Interface Web Interativa (Recomendado — 1 Clique)
-- **No Windows:** Dê **duplo clique no arquivo `executar_web.bat`**.
+#### Opção 0: Acesso Imediato no Navegador (Universal / Zero Instalação — Recomendado para Avaliadores)
+- Basta dar **duplo clique no arquivo [`interface_visual.html`](interface_visual.html)**.
+- Abre diretamente no seu navegador padrão (Chrome, Edge, Firefox, Safari).
+- **100% autônomo e offline:** Não necessita de Python, Node.js nem instalação de qualquer pacote. Executa o simulador, a mecânica dos rolos, os 5 experimentos, os gráficos interativos e o download de CSVs de forma nativa e instantânea.
+
+---
+
+#### Opção A: Interface Web com Servidor Backend FastAPI (1 Clique)
+- **No Windows:** Dê **duplo clique no arquivo [`executar_web.bat`](executar_web.bat)**.
 - **No Linux ou macOS:** Abra o terminal na pasta e execute:
   ```bash
   chmod +x executar_web.sh
@@ -165,16 +172,15 @@ O projeto foi projetado com arquitetura de **auto-inicialização (self-bootstra
   ```
 > **O que o inicializador faz automaticamente:**
 > 1. Detecta o interpretador Python na máquina.
-> 2. Cria o ambiente virtual `.venv` caso ainda não exista.
-> 3. Instala automaticamente as dependências de `requirements.txt` na primeira execução.
-> 4. Inicia o servidor backend FastAPI na porta 8000.
-> 5. Abre seu navegador padrão diretamente em **`http://127.0.0.1:8000`**.
-> 6. Oferece controle por teclado acessível (tecla **Espaço** para girar a roleta).
+> 2. Utiliza as dependências instaladas ou configura o ambiente virtual `.venv` caso necessário.
+> 3. Inicia o servidor backend FastAPI na porta 8000.
+> 4. Abre seu navegador padrão diretamente em **`http://127.0.0.1:8000`**.
+> 5. Oferece controle por teclado acessível (tecla **Espaço** para girar a roleta).
 
 ---
 
 #### Opção B: Menu Interativo no Terminal (1 Clique)
-- **No Windows:** Dê **duplo clique no arquivo `executar.bat`**.
+- **No Windows:** Dê **duplo clique no arquivo [`executar.bat`](executar.bat)**.
 - **No Linux ou macOS:**
   ```bash
   chmod +x executar.sh
