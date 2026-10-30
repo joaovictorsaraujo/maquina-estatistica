@@ -1,12 +1,12 @@
 {
   "projeto": "Máquina Estatística — Trabalho I (IFES Serra)",
   "disciplina": "Probabilidade e Estatística I",
-  "timestamp_execucao": "2026-10-29T22:48:28.308887",
+  "timestamp_execucao": "2026-10-30T00:05:58.140524",
   "ambiente": {
-    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
-    "plataforma": "Windows-10-10.0.19045-SP0",
-    "sistema_operacional": "Windows",
-    "arquitetura": "AMD64",
+    "python_version": "3.12.3 (main, Mar 23 2026, 19:04:32) [GCC 13.3.0]",
+    "plataforma": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "sistema_operacional": "Linux",
+    "arquitetura": "x86_64",
     "gerador_pseudoaleatorio": "Python random.Random (Mersenne Twister MT19937)"
   },
   "parametros_experimentais": {
