@@ -14,11 +14,28 @@
 
 ## 1. Identificação da Equipe
 
-- João Victor Santos Araujo — 20241bsi0319
+- **João Victor Santos Araujo** — 20241bsi0319
+- **João Victor Nascimento Ribeiro**
 
 ---
 
-## 2. Visão Geral e Objetivos do Projeto
+## 2. Acesso Rápido aos Experimentos Online (Sem Instalação)
+
+Conforme recomendado pelo professor, disponibilizamos acesso direto e interativo aos experimentos tanto no navegador quanto em nuvem:
+
+| Plataforma | Descrição do Recurso | Link Direto |
+|---|---|:---:|
+| 🌐 **GitHub Pages** | **Laboratório Web Interativo Completo** (Simulação em tempo real, visualização de rolos, gráficos do Chart.js, acessibilidade por teclado e download dos CSVs oficiais) | [**Acessar no GitHub Pages**](https://joaovictorsaraujo.github.io/maquina-estatistica/) |
+| 📓 **Colab — Modelo Teórico** | Espaço amostral ($|\Omega|=125$), distribuição discreta, esperança $E[X]=-0{,}16$ e RTP $84\%$ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/00_modelo_teorico.ipynb) |
+| 📓 **Colab — Experimento 1** | 10.000 rodadas, frequências relativas, RTP observado e desvio padrão amostral ($s$ com divisor $N-1$) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/01_frequencias_rtp.ipynb) |
+| 📓 **Colab — Experimento 2** | Lei dos Grandes Números, Monte Carlo (seeds 10, 2026, 123456) e verificação determinística | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/02_convergencia_medias.ipynb) |
+| 📓 **Colab — Experimento 3** | 100 jogadores com saldo limitado ($B_0=100$), ruína (67%), contraste entre média e mediana | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/03_simulacao_jogadores.ipynb) |
+| 📓 **Colab — Experimento 4** | 9.999 pares consecutivos, probabilidade condicional e refutação da Falácia do Jogador | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/04_independencia.ipynb) |
+| 📓 **Colab — Experimento 5** | Regulação com pagamentos +10%, elevação do RTP para 92,4% mantendo $E[X] < 0$ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/05_comparacao_pagamentos.ipynb) |
+
+---
+
+## 3. Visão Geral e Objetivos do Projeto
 
 O projeto **Máquina Estatística** investiga a dinâmica probabilística e econômica subjacente aos jogos de rolos digitais (popularizados no Brasil por slots como o "jogo do tigrinho"). 
 
@@ -301,13 +318,6 @@ python -m pytest -v tests
 
 ---
 
-## 10. Declaração de Uso de Inteligência Artificial
-
-Em estrito cumprimento aos critérios éticos e às orientações do professor:
-- **Papel da IA no desenvolvimento:** A inteligência artificial atuou como assistente de arquitetura de software, automação de testes em Python, estruturação modular de código e suporte à conferência matemática das equações do enunciado.
-- **Verificações realizadas pela equipe:** Todas as regras de negócio, sorteios circulares mod 5, fórmulas de esperança matemática e RTP, deduções analíticas, códigos-fonte e interpretações textuais foram integralmente revisados, testados via `pytest` e confirmados pelos integrantes do grupo antes da submissão final.
-
-
 ## 10. Declaração Formal de Uso de Inteligência Artificial
 
 Em conformidade com os critérios éticos e de transparência do IFES e da disciplina Probabilidade e Estatística I, declara-se que:
@@ -318,4 +328,4 @@ Em conformidade com os critérios éticos e de transparência do IFES e da disci
    - Apoio na codificação da suíte com 23 testes unitários na biblioteca `pytest`.
    - Auxílio no design, estilização acessível do painel visual HTML/CSS/JS com paleta institucional e configuração de gráficos com Chart.js.
 3. **Responsabilidade e Revisão Humana:**
-   - Todas as deduções matemáticas (espaço amostral $|\Omega| = 125$, esperança de lucro líquido $E[X] = -0{,}16$, variância populacional, RTP de $84{,}0\%$ e probabilidades condicionais), as interpretações dos cinco experimentos e a conferência de cada um dos resultados numéricos nos relatórios e tabelas CSV foram integralmente deduzidas, revisadas e validadas pelo aluno **João Victor Santos Araujo**. O código Python oficial é a fonte única da verdade matemática do trabalho.
+   - Todas as deduções matemáticas (espaço amostral $|\Omega| = 125$, esperança de lucro líquido $E[X] = -0{,}16$, variância populacional, RTP de $84{,}0\%$ e probabilidades condicionais), as interpretações dos cinco experimentos e a conferência de cada um dos resultados numéricos nos relatórios e tabelas CSV foram integralmente deduzidas, revisadas e validadas pelos alunos **João Victor Santos Araujo** e **João Victor Nascimento Ribeiro**. O código Python oficial é a fonte única da verdade matemática do trabalho.

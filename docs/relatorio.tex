@@ -1,0 +1,96 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!70!black,
+    citecolor=blue!70!black,
+    urlcolor=blue!70!black
+}
+
+\title{\textbf{MÁQUINA ESTATÍSTICA: PROBABILIDADE, APOSTAS E PENSAMENTO CRÍTICO}\\
+\large Como Ganhos Ocasionais Coexistem com a Perda Esperada: Demonstração Formal e Simulações de Monte Carlo}
+\author{\textbf{João Victor Santos Araujo} (20241bsi0319) \and \textbf{João Victor Nascimento Ribeiro}\\
+\small Instituto Federal do Espírito Santo — Campus Serra\\
+\small Bacharelado em Sistemas de Informação — Probabilidade e Estatística I (2026/2)\\
+\small Professor: Dr. Fidelis Zanetti de Castro}
+\date{Outubro de 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=\textbf{Ambiente Experimental Online e Reprodutibilidade}]
+\small
+\begin{itemize}
+    \item \textbf{Experimentos Web Interativos (GitHub Pages):} \url{https://joaovictorsaraujo.github.io/maquina-estatistica/}
+    \item \textbf{Cadernos no Google Colab:}
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/00_modelo_teorico.ipynb}{00. Teoria} $\mid$
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/01_frequencias_rtp.ipynb}{01. Frequências e RTP} $\mid$
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/02_convergencia_medias.ipynb}{02. Grandes Números} $\mid$
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/03_simulacao_jogadores.ipynb}{03. Saldo Limitado} $\mid$
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/04_independencia.ipynb}{04. Independência} $\mid$
+    \href{https://colab.research.google.com/github/joaovictorsaraujo/maquina-estatistica/blob/master/notebooks/05_comparacao_pagamentos.ipynb}{05. Pagamentos +10\%}
+    \item \textbf{Código-fonte no GitHub:} \url{https://github.com/joaovictorsaraujo/maquina-estatistica}
+\end{itemize}
+\end{tcolorbox}
+
+\section{Contexto e Objetivos}
+A proliferação de aplicativos de apostas digitais no Brasil alterou profundamente os hábitos de consumo e entretenimento. O chamado ``jogo do tigrinho'' popularizou os rolos virtuais sob interfaces vibrantes que ocultam sua lógica econômica estocástica. Este trabalho investiga a questão central: \textit{Como ganhos ocasionais podem coexistir com uma perda esperada para o jogador, e o que essa diferença nos ajuda a compreender sobre as apostas na sociedade?}
+
+Em setembro de 2026, o cenário regulatório brasileiro passou por transformações severas com a edição da Medida Provisória nº 1.394/2026, suspendendo apostas de quota fixa, e a ação civil pública da União cobrando ressarcimento ao SUS. É vital diferenciar com precisão técnica três grandezas que medem universos distintos e não devem ser somadas:
+\begin{enumerate}
+    \item \textbf{R\$ 18 a 21 bilhões/mês (Banco Central, 2024):} Estimativa de fluxos brutos via Pix. Não representa a perda líquida dos apostadores.
+    \item \textbf{R\$ 17,4 bilhões no 1º semestre de 2025 (TCU, 2026):} Receita bruta das plataformas (GGR = Apostas menos Prêmios).
+    \item \textbf{R\$ 38,8 bilhões anuais (IEPS, 2025):} Estimativa analítica de custos sociais e valoração de incapacidade em saúde.
+\end{enumerate}
+
+\section{Modelo da Máquina e Conceitos Teóricos}
+O modelo didático implementado utiliza três rolos independentes com sequência circular idêntica $S = \{A, B, C, D, E\}$. Cada rolo sorteia uma parada uniforme $K_j \in \{0, 1, 2, 3, 4\}$, compondo a janela $3 \times 3$. Apenas a linha central horizontal gera pagamento. O espaço amostral das triplas centrais contém $|\Omega| = 5^3 = 125$ eventos equiprováveis com $P(\text{tripla}) = 1/125 = 0{,}8\%$.
+
+A aposta é de 1 crédito fictício por rodada. Define-se $P$ como o prêmio bruto e $X = P - 1$ como o lucro líquido:
+\begin{equation}
+    E[P] = \frac{5 + 10 + 15 + 25 + 50}{125} = 0{,}84 \text{ créditos}, \quad E[X] = 0{,}84 - 1{,}00 = -0{,}16 \text{ créditos/rodada}
+\end{equation}
+O retorno teórico ao jogador é $\text{RTP} = 84{,}0\%$, implicando uma vantagem da casa de $16{,}0\%$. A probabilidade de qualquer vitória é $5/125 = 4{,}0\%$.
+
+\section{Procedimento e Análise dos Cinco Experimentos}
+
+\subsection{Experimento 1: As frequências acompanham as probabilidades?}
+Executadas $10.000$ rodadas com semente oficial 2026. As contagens somaram exatamente $10.000$ e as frequências relativas somaram $1{,}000000$. O lucro médio observado foi $\bar{X} = -0{,}1315$ créditos (teórico: $-0{,}16$), com RTP de $86{,}85\%$ e desvio-padrão amostral $s = 5{,}2750$ créditos (divisor $N-1$). O intervalo de confiança de 95\% obtido foi $[-0{,}2349; -0{,}0281]$, englobando o valor esperado $\mu = -0{,}16$.
+
+\subsection{Experimento 2: Aumento da amostra e Lei dos Grandes Números}
+Avaliadas três sequências de $10.000$ rodadas (sementes 10, 2026 e 123456) nos horizontes $N = 100, 1.000, 10.000$. A semente 2026 foi reutilizada do E1 e sua reprodutibilidade foi confirmada com 100\% de coincidência nos 10 primeiros sorteios. A convergência para $-0{,}16$ ocorre em probabilidade, sem monotonicidade.
+
+\subsection{Experimento 3: Saldo limitado e o viés de sobrevivência}
+Simulados 100 jogadores virtuais com $B_0 = 100$, aposta de 1 crédito e limite de 500 rodadas (semente 42). Resultados: $23\%$ ganho, $2\%$ empate, $75\%$ perda. A taxa de esgotamento total (ruína) foi de $67\%$. Enquanto o saldo médio final foi de $52{,}10$ créditos (puxado por poucos ganhadores com até 390 créditos), o saldo mediano foi exatamente $0{,}00$ créditos, ilustrando matematicamente o viés de sobrevivência das redes sociais.
+
+\subsection{Experimento 4: Independência e Falácia do Jogador}
+Examinados os $9.999$ pares consecutivos do E1: a chance de prêmio após vitória foi de $4{,}13\%$ (17 em 412) e após derrota foi de $4{,}12\%$ (395 em 9.587), ambas convergentes à referência teórica de $4{,}00\%$. Isso refuta a falácia de que a máquina ``deve'' um prêmio após sequências negativas.
+
+\subsection{Experimento 5: Prêmios maiores tornam o jogo favorável?}
+Comparação entre Tabela Base e Tabela +10\% nos mesmos $10.000$ sorteios. O RTP sobe de $84{,}0\%$ para $92{,}4\%$, e o prejuízo esperado diminui de $-0{,}16$ para $-0{,}076$, mas o jogo permanece estritamente desfavorável e a chance de ganhar continua fixada em $4{,}00\%$.
+
+\section{Discussão Crítica e Responsabilidade Profissional}
+A coexistência de perdas contínuas com picos de premiação fundamenta-se no condicionamento operante por reforço intermitente. Dados da comissão The Lancet (Wardle et al., 2024) apontam $15{,}8\%$ de jogo problemático em usuários de cassinos digitais, com forte impacto financeiro sobre famílias de baixa renda (LENAD III, 2025). Do ponto de vista ético, desenvolvedores de software devem repudiar padrões obscuros (\textit{dark patterns}) e prover transparência ativa sobre o valor esperado real dos sistemas.
+
+\section{Referências Bibliográficas}
+\begin{itemize}
+    \item BAKER, S. R. et al. Gambling Away Stability. NBER Working Paper 33108, 2024.
+    \item BANCO CENTRAL DO BRASIL. Análise técnica sobre mercado de apostas online. Nota Técnica 513/2024.
+    \item BRASIL. Presidência da República. Medida Provisória nº 1.394, de 25 de setembro de 2026.
+    \item ILLOWSKY, B.; DEAN, S. Introductory Statistics 2e. OpenStax, 2023.
+    \item ROSA, D. et al. A saúde dos brasileiros em jogo. IEPS, dez. 2025.
+    \item TCU. Acórdão 1296/2026 – Plenário. Fiscalização de plataformas ilegais.
+    \item WARDLE, H. et al. The Lancet Public Health Commission on gambling. v. 9, 2024.
+\end{itemize}
+
+\end{document}
